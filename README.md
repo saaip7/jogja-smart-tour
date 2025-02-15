@@ -1,7 +1,7 @@
-# NamaProduct
-Isi deskripsi product
+# Jogja Smart Tour
+Platform Perencanaan Wisata Yogyakarta
 
-Kelompok ____  
+Kelompok Warlok  
 Ketua Kelompok: Joko
 - Anggota 1: Syaifullah Hilmi Ma'arij
 - Anggota 2: Joko 2
