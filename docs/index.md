@@ -133,6 +133,7 @@ Jogja Smart Tour bertujuan untuk mempermudah wisatawan merencanakan dan menjalan
 | FR 6   | Sistem harus dapat memanggil API maps, misalnya Google Maps, untuk menampilkan navigasi dan estimasi waktu yang diperlukan wisatawan.                                                  |
 | FR 7   | User Wisatawan dapat memilih untuk menyalakan notifikasi pengingat perjalanan berikutnya.                                                                                              |
 | FR 8   | User Wisatawan dapat menyesuaikan itinerary & biaya jika dirasa belum cocok dengan agendanya.                                                                                          |
+#### Entity Relationship Diagram
 
 #### Lo-Fi Wireframe
 
