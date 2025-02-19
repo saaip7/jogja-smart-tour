@@ -1,5 +1,5 @@
 
-# Project Senior Project TI
+# Proyek Senior Project TI
 
 ## Kelompok Warlok 
 
@@ -101,3 +101,39 @@ Untuk meningkatkan pengalaman pengguna, Jogja Smart Tour juga memanfaatkan AI da
 |                                          | Hanya berfokus pada pencatatan pengeluaran, tidak ada rekomendasi wisata atau prediksi biaya berdasarkan destinasi                                                                                                                                                                                                     |   |   |
 |                                          | Tidak memiliki fitur AI untuk menganalisis biaya perjalanan atau memberikan estimasi anggaran sebelum bepergian.                                                                                                                                                                                                       |   |   |
 | Key Competitive Advantage & Unique Value | TravelSpend unggul dalam manajemen keuangan perjalanan, tetapi tidak memiliki fitur AI itinerary generator dan estimasi biaya otomatis. Jogja Smart Tour menggabungkan kemampuan manajemen budget seperti TravelSpend, tetapi dengan AI yang bisa langsung memperkirakan biaya perjalanan sebelum wisatawan berangkat. |   |   |
+
+## Metodologi SDLC
+
+Metode Scrum digunakan karena metodologi ini memberikan fleksibilitas tinggi, yang memungkinkan penyesuaian berdasarkan feedback pengguna. Metodologi scrum mendukung pendekatan yang iteratif dan inkremental yang mana fitur yang dikembangan akan berada dalam sprint yang bertahap sehingga evaluasi dan perbaikan dapat dilakukan secara berkala.
+Selain itu, metodologi ini mendukung kolaborasi tim yang kuat yang mana masing-masing anggota tim memiliki peran yang spesifik (Project Manager, UI/UX, Frontend Engineer, Backend engineer, Cloud Engineer, AI Engineer), serta mampu beradaptasi dengan cepat tanpa mengganggu keseluruhan proyek.
+
+### Perancangan Tahap 1-3 SDLC 
+
+#### Tujuan Produk 
+
+Jogja Smart Tour bertujuan untuk mempermudah wisatawan merencanakan dan menjalankan perjalanan wisata di Yogyakarta dengan sistem penyusunan *itinerary* otomatis berbasis rekomendasi model AI, yang didampingi dengan API maps untuk memandu perjalanan mereka. 
+
+#### Target User
+
+    1. Wisatawan domestik dan mancanegara yang membutuhkan rencana perjalanan tanpa harus mencari informasi secara manual.
+    2. Backpackers atau solo travelers yang membutuhkan fleksibilitas dalam perencanaan serta rekomendasi tempat wisata yang menarik.
+    3. Wisatawan yang baru pertama kali ke Yogyakarta yang membutuhkan navigasi dan rekomendasi tempat wisata yang jelas. 
+
+#### Use-Case Diagram
+
+#### Functional Requirements
+
+| **FR** | **Deskripsi**                                                                                                                                                                          |
+|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| FR 1   | User Wisatawan dapat melihat rekomendasi destinasi wisata di Yogyakarta.                                                                                                               |
+| FR 2   | User Wisatawan dapat melakukan Sign Up & Sign In dengan Google.                                                                                                                        |
+| FR 3   | User Wisatawan dapat mengisi preferensi wisatanya dalam bentuk form jika sudah melakukan Sign Up & Sign In dengan Google.                                                              |
+| FR 4   | Model AI harus menganalisis preferensi yang di-input user Wisatawan untuk memberikan rekomendasi itinerary dan biaya yang mencakup, misalnya transportasi, akomodasi, dan tiket masuk. |
+| FR 5   | Sistem harus dapat menampilkan rencana perjalanan (itinerary) otomatis berdasarkan tanggal, durasi, budget, dan preferensi wisata pengguna.                                            |
+| FR 6   | Sistem harus dapat memanggil API maps, misalnya Google Maps, untuk menampilkan navigasi dan estimasi waktu yang diperlukan wisatawan.                                                  |
+| FR 7   | User Wisatawan dapat memilih untuk menyalakan notifikasi pengingat perjalanan berikutnya.                                                                                              |
+| FR 8   | User Wisatawan dapat menyesuaikan itinerary & biaya jika dirasa belum cocok dengan agendanya.                                                                                          |
+
+#### Low-Fi Wireframe
+
+#### Gantt-Chart Timeline
