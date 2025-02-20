@@ -119,7 +119,7 @@ Jogja Smart Tour bertujuan untuk mempermudah wisatawan merencanakan dan menjalan
 3. Wisatawan yang baru pertama kali ke Yogyakarta yang membutuhkan navigasi dan rekomendasi tempat wisata yang jelas. 
 
 #### Use-Case Diagram
-![Use case Jogja Smart Tour](https://github.com/saaip7/jogja-smart-tour/blob/main/docs/public/use-case.jpg)
+![Use case Jogja Smart Tour](https://i.imghippo.com/files/iIf7705xU.jpg)
 
 #### Functional Requirements
 
@@ -136,13 +136,13 @@ Jogja Smart Tour bertujuan untuk mempermudah wisatawan merencanakan dan menjalan
 
 #### Entity Relationship Diagram
 Berikut adalah rancangan ERD projek kami
-![ERD Jogja Smart Tour](https://github.com/saaip7/jogja-smart-tour/blob/main/docs/public/erd.jpeg)
+![ERD Jogja Smart Tour](https://i.imghippo.com/files/TYT8368UWI.jpeg)
 
 #### Lo-Fi Wireframe
 Berikut rancangan Lo-Fi wireframes
-![Lofi JST](https://github.com/saaip7/jogja-smart-tour/blob/main/docs/public/lofi.png)
+![Lofi JST](https://i.imghippo.com/files/kOZ7975FlQ.png)
 
 #### Gantt-Chart Timeline
 Gantt-Chart pengerjaan proyek dalam kurun waktu 1 semester
-![Gantt chart project](https://github.com/saaip7/jogja-smart-tour/blob/main/docs/public/gantt-chart.png)
+![Gantt chart project](https://i.imghippo.com/files/oi6220gAg.png)
 
