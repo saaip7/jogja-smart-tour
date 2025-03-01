@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  directUrl    = env("DIRECT_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String?
+  image         String?
+  googleId      String?   @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  preferences   UserPreference?
+  itineraries   Itinerary[]
+}
+
+model UserPreference {
+  id            String    @id @default(uuid())
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id])
+  interests     String[]
+  budgetRange   String?
+  travelStyle   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Itinerary {
+  id                String    @id @default(uuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id])
+  title             String
+  startDate         DateTime
+  endDate           DateTime
+  budgetEstimation  Float
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  destinations      ItineraryDestination[]
+}
+
+model Destination {
+  id            String    @id @default(uuid())
+  name          String
+  description   String?
+  location      String?
+  imageUrl      String?
+  category      String?
+  price         Float?
+  itineraries   ItineraryDestination[]
+}
+
+model ItineraryDestination {
+  id              String     @id @default(uuid())
+  itineraryId     String
+  itinerary       Itinerary  @relation(fields: [itineraryId], references: [id])
+  destinationId   String
+  destination     Destination @relation(fields: [destinationId], references: [id])
+  visitDate       DateTime
+  order           Int
+}
