@@ -2,13 +2,24 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import LoginModal from "./LoginModal";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function Navbar() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, login, isAuthenticated } = useAuth();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const router = useRouter();
 
@@ -81,7 +92,7 @@ export default function Navbar() {
           </div>
         ) : (
           <>
-            <LoginModal
+            {/* <LoginModal
               isOpen={isLoginModalOpen}
               onClose={() => setIsLoginModalOpen(false)}
             />
@@ -90,7 +101,54 @@ export default function Navbar() {
               className="bg-[#0072BB] text-white px-4 py-2 rounded-md hover:bg-[#004C7D]"
             >
               Masuk
-            </button>
+            </button> */}
+            <AlertDialog>
+              <AlertDialogTrigger className="bg-primary-500 text-white px-10 py-2 rounded-lg hover:bg-primary-700">
+                Masuk
+              </AlertDialogTrigger>
+              <AlertDialogContent className="w-[20.563rem]">
+                <AlertDialogHeader>
+                  <AlertDialogCancel className="absolute right-4 top-4 text-gray-500 hover:text-gray-700">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </AlertDialogCancel>
+                  <AlertDialogTitle className="text-primary-500 pb-2 text-center">
+                    Cobain Sekarang!
+                  </AlertDialogTitle>
+                  <AlertDialogDescription className="pb-4 text-center">
+                    Rasakan kemudahan{" "}
+                    <span className="font-bold">Jogja Smart Tour</span> untuk
+                    perjalananmu
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogAction
+                    onClick={() => login()}
+                    className="w-full bg-primary-500 hover:bg-primary-700"
+                  >
+                    <Image
+                      src="/Google.png"
+                      alt="Google Icon"
+                      width={24}
+                      height={24}
+                    />
+                    <span>Sign in with Google</span>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </>
         )}
       </div>
