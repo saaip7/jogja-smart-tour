@@ -17,10 +17,8 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export default function Navbar() {
-  const { user, logout, login, isAuthenticated } = useAuth();
+  const { user, logout, login } = useAuth();
   const router = useRouter();
-
-  console.log("Tes navbar:", user, isAuthenticated);
 
   return (
     <header className="w-full py-4 px-8 flex justify-between items-center">

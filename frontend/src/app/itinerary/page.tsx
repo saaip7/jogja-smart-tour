@@ -5,18 +5,30 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
 
+interface Itinerary {
+  id: string | number;
+  title: string;
+  startDate: string;
+  endDate: string;
+  budgetEstimation: number;
+}
+
 export default function ItineraryPage() {
-  const { user } = useAuth();
-  const { isAuthenticated } = useAuth();
-  const [itineraries, setItineraries] = useState([]);
+  const { user, isAuthenticated } = useAuth();
+  const [itineraries, setItineraries] = useState<Itinerary[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/");
+      return;
+    }
+
     if (user) {
       fetchItineraries();
     }
-  }, [user]);
+  }, [user, isAuthenticated, router]);
 
   const fetchItineraries = async () => {
     try {
@@ -32,16 +44,22 @@ export default function ItineraryPage() {
     }
   };
 
-  return isAuthenticated ? (
-    <div className="min-h-screen bg-gray-50">
-      <main className="container mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-6">Your Itineraries</h1>
+  // Return early if not authenticated
+  if (!isAuthenticated) {
+    return <Loading />;
+  }
 
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <header className="mb-8">
+        <h1 className="text-3xl font-bold">My Itineraries</h1>
+      </header>
+      <main>
         {loading ? (
           <Loading />
         ) : itineraries.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {itineraries.map((itinerary: any) => (
+            {itineraries.map((itinerary: Itinerary) => (
               <div
                 key={itinerary.id}
                 className="bg-white p-6 rounded-lg shadow-md"
@@ -72,7 +90,5 @@ export default function ItineraryPage() {
         )}
       </main>
     </div>
-  ) : (
-    router.push("/")
   );
 }
