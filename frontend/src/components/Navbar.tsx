@@ -3,8 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
-import LoginModal from "./LoginModal";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   AlertDialog,
@@ -20,7 +18,6 @@ import {
 
 export default function Navbar() {
   const { user, logout, login, isAuthenticated } = useAuth();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const router = useRouter();
 
   console.log("Tes navbar:", user, isAuthenticated);
@@ -92,23 +89,13 @@ export default function Navbar() {
           </div>
         ) : (
           <>
-            {/* <LoginModal
-              isOpen={isLoginModalOpen}
-              onClose={() => setIsLoginModalOpen(false)}
-            />
-            <button
-              onClick={() => setIsLoginModalOpen(true)}
-              className="bg-[#0072BB] text-white px-4 py-2 rounded-md hover:bg-[#004C7D]"
-            >
-              Masuk
-            </button> */}
             <AlertDialog>
               <AlertDialogTrigger className="bg-primary-500 text-white px-10 py-2 rounded-lg hover:bg-primary-700">
                 Masuk
               </AlertDialogTrigger>
               <AlertDialogContent className="w-[20.563rem]">
                 <AlertDialogHeader>
-                  <AlertDialogCancel className="absolute right-4 top-4 text-gray-500 hover:text-gray-700">
+                  <AlertDialogCancel className="absolute right-2 top-2 text-gray-500 hover:text-gray-700">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6"
