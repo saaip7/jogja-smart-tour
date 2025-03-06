@@ -23,51 +23,74 @@ model User {
   googleId      String?   @unique
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  preferences   UserPreference?
-  itineraries   Itinerary[]
+  preferences   preferensi_wisata[]
+  itineraries   itinerary[]
 }
 
-model UserPreference {
-  id            String    @id @default(uuid())
-  userId        String    @unique
-  user          User      @relation(fields: [userId], references: [id])
-  interests     String[]
-  budgetRange   String?
-  travelStyle   String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+model preferensi_wisata {
+  id                Int      @id @default(autoincrement())
+  user_id           String   @db.VarChar(50)
+  jenis_wisata      String   @db.VarChar(255)
+  budget            Decimal  @db.Decimal(10, 2)
+  durasi_hari       Int
+  tanggal_perjalanan DateTime @db.Date
+  
+  user              User     @relation(fields: [user_id], references: [id])
+  itinerary         itinerary[]
+  @@index ([user_id])
 }
 
-model Itinerary {
-  id                String    @id @default(uuid())
-  userId            String
-  user              User      @relation(fields: [userId], references: [id])
-  title             String
-  startDate         DateTime
-  endDate           DateTime
-  budgetEstimation  Float
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  destinations      ItineraryDestination[]
+model estimasi_biaya {
+  id                Int      @id @default(autoincrement())
+  itinerary_id      Int
+  transportasi      Decimal  @db.Decimal(10, 2)
+  akomodasi         Decimal  @db.Decimal(10, 2)
+  makan             Decimal  @db.Decimal(10, 2)
+  tiket_wisata      Decimal  @db.Decimal(10, 2)
+  total_biaya       Decimal  @db.Decimal(10, 2)
+  
+  itinerary         itinerary @relation(fields: [itinerary_id], references: [id])
+
+  @@index([itinerary_id])
 }
 
-model Destination {
-  id            String    @id @default(uuid())
-  name          String
-  description   String?
-  location      String?
-  imageUrl      String?
-  category      String?
-  price         Float?
-  itineraries   ItineraryDestination[]
+model itinerary {
+  id                Int      @id @default(autoincrement())
+  user_id           String   @db.VarChar(50)
+  preferensi_id     Int
+  total_biaya       Decimal  @db.Decimal(10, 2)
+  created_at        DateTime @default(now()) @db.Timestamp()
+  
+  user              User     @relation(fields: [user_id], references: [id])
+  preferensi_wisata preferensi_wisata @relation(fields: [preferensi_id], references: [id])
+  estimasi_biaya    estimasi_biaya[]
+  itinerary_detail  itinerary_detail[]
+  
+  @@index([user_id])
+  @@index([preferensi_id])
 }
 
-model ItineraryDestination {
-  id              String     @id @default(uuid())
-  itineraryId     String
-  itinerary       Itinerary  @relation(fields: [itineraryId], references: [id])
-  destinationId   String
-  destination     Destination @relation(fields: [destinationId], references: [id])
-  visitDate       DateTime
-  order           Int
+model itinerary_detail {
+  id                Int      @id @default(autoincrement())
+  itinerary_id      Int
+  preferensi_id     Int
+  destinasi_id      Int
+  urutan_hari       Int
+  
+  itinerary         itinerary @relation(fields: [itinerary_id], references: [id])
+  destinasi         destinasi @relation(fields: [destinasi_id], references: [id])
+
+  @@index([itinerary_id])
+  @@index([destinasi_id])
+}
+
+model destinasi {
+  id                Int      @id @default(autoincrement())
+  nama_destinasi    String   @db.VarChar(255)
+  lokasi            String   @db.VarChar(255)
+  kategori          String   @db.VarChar(255)
+  harga_tiket       Decimal  @db.Decimal(10, 2)
+  rating            Decimal  @db.Decimal(3, 2)
+  
+  itinerary_detail  itinerary_detail[]
 }
