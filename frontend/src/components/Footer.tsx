@@ -5,7 +5,6 @@ import { OwnButton } from "./OwnButton";
 export default function Footer() {
   return (
     <footer>
-      {/* CTA Section with Blue Background */}
       <div className="bg-[#004176] py-12 text-center text-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold mb-2">Siap Memulai Perjalananmu Di Jogja?</h2>
@@ -16,11 +15,9 @@ export default function Footer() {
         </div>
       </div>
       
-      {/* Main Footer */}
       <div className="bg-white py-8 px-12">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Logo and Description */}
             <div className="col-span-1 md:col-span-1">
               <div className="relative w-40 h-12 mb-4">
                 <Image
@@ -36,7 +33,6 @@ export default function Footer() {
               </p>
             </div>
 
-            {/* Quick Links */}
             <div className="col-span-1">
               <h3 className="font-semibold text-gray-800 mb-4">Links</h3>
               <ul className="space-y-2">
@@ -62,8 +58,7 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-
-            {/* Contact Info */}
+            
             <div className="col-span-1">
               <h3 className="font-semibold text-gray-800 mb-4">Kontak</h3>
               <ul className="space-y-2">
@@ -89,7 +84,6 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Social Media */}
             <div className="col-span-1">
               <h3 className="font-semibold text-gray-800 mb-4">Ikuti Kami</h3>
               <div className="flex space-x-4">
@@ -116,8 +110,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-
-          {/* Navigation Links - Similar to image */}
+          
           <div className="flex justify-center space-x-8 mt-8 pt-4 border-t border-gray-200">
             <Link href="/" className="text-gray-600 hover:text-primary-500 text-sm">
               Beranda
@@ -141,8 +134,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      
-      {/* Copyright Section with Blue Background */}
       <div className="bg-[#004176] py-3">
         <p className="text-center text-white text-sm">
           © {new Date().getFullYear()} Jogja Smart Tour. All rights reserved.
