@@ -27,6 +27,7 @@ export default {
         "secondary-500": "#A3D6D9",
         "secondary-700": "#88B2B5",
         "secondary-900": "#6D8F91",
+        "bg-primary": "#F9FAFB",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
