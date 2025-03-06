@@ -14,7 +14,7 @@ export function DestinasiCard({
   location,
 }: DestinasiCardProps) {
   return (
-    <div key={id} className="bg-white rounded-lg overflow-hidden shadow-md">
+    <div className="bg-white rounded-lg overflow-hidden shadow-md">
       <div className="h-60 relative">
         <img src={imageUrl} alt={name} className="object-cover w-full h-full" />
       </div>

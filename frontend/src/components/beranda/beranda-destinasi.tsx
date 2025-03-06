@@ -44,7 +44,6 @@ const topDestinations = [
 
 export const BerandaDestinasi = () => {
   const [activeCategory, setActiveCategory] = useState("Semua");
-
     // Filter destinations based on active category
     const filteredDestinations =
     activeCategory === "Semua" ? destinations : destinations.filter((dest) => dest.category === activeCategory)
@@ -58,6 +57,7 @@ export const BerandaDestinasi = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {topDestinations.map((destination) => (
           <DestinasiCard
+            key={destination.id}
             id={destination.id}
             name={destination.name}
             description={destination.description}
@@ -78,7 +78,6 @@ export const BerandaDestinasi = () => {
             menggugah selera.
           </p>
         </div>
-
         {/* Category filters */}
         <div className="flex flex-wrap justify-center gap-2 mb-8">
           {categories.map((category) => (
@@ -95,7 +94,6 @@ export const BerandaDestinasi = () => {
             </button>
           ))}
         </div>
-
         {/* Destinations grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {filteredDestinations.map((destination) => (
