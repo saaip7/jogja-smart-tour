@@ -15,13 +15,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { OwnButton } from "@/components/OwnButton";
 
 export default function Navbar() {
   const { user, logout, login } = useAuth();
   const router = useRouter();
 
   return (
-    <header className="w-full py-4 px-8 flex justify-between items-center">
+    <header className="w-full py-4 px-12 flex justify-between items-center">
       <div className="flex items-center">
         <div className="relative w-40 h-12">
           <Image
@@ -36,25 +37,25 @@ export default function Navbar() {
       </div>
 
       <nav className="hidden md:flex items-center space-x-8">
-        <Link href="/" className="text-[#2A2A2A] hover:text-[#004C7D]">
+        <Link href="/" className="text-neutral-900 hover:text-primary-700 font-medium">
           Beranda
         </Link>
         <Link
           href="/rekomendasi"
-          className="text-[#2A2A2A] hover:text-[#004C7D]"
+          className="text-neutral-900 hover:text-primary-700 font-medium"
         >
           Rekomendasi
         </Link>
         <Link
           href="/tentang-kami"
-          className="text-[#2A2A2A] hover:text-[#004C7D]"
+          className="text-neutral-900 hover:text-primary-700 font-medium"
         >
           Tentang Kami
         </Link>
         {user && (
           <Link
             href="/itinerary"
-            className="text-[#2A2A2A] hover:text-[#004C7D]"
+            className="text-neutral-900 hover:text-primary-700 font-medium"
           >
             Itinerary
           </Link>
@@ -80,7 +81,7 @@ export default function Navbar() {
             </div>
             <button
               onClick={() => logout()}
-              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition"
+              className="bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-md hover:bg-gray-300 transition"
             >
               Logout
             </button>
@@ -88,12 +89,14 @@ export default function Navbar() {
         ) : (
           <>
             <AlertDialog>
-              <AlertDialogTrigger className="bg-primary-500 text-white px-10 py-2 rounded-lg hover:bg-primary-700">
-                Masuk
+              <AlertDialogTrigger>
+                <OwnButton className="bg-primary-500 text-white px-10 py-2 rounded-lg hover:bg-primary-700 font-medium">
+                  Masuk
+                </OwnButton>
               </AlertDialogTrigger>
               <AlertDialogContent className="w-[20.563rem]">
                 <AlertDialogHeader>
-                  <AlertDialogCancel className="absolute right-2 top-2 text-gray-500 hover:text-gray-700">
+                  <AlertDialogCancel className="absolute right-2 top-2 text-gray-500 hover:text-gray-700 font-medium">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6"
@@ -121,7 +124,7 @@ export default function Navbar() {
                 <AlertDialogFooter>
                   <AlertDialogAction
                     onClick={() => login()}
-                    className="w-full bg-primary-500 hover:bg-primary-700"
+                    className="w-full bg-primary-500 hover:bg-primary-700 font-medium"
                   >
                     <Image
                       src="/Google.png"
