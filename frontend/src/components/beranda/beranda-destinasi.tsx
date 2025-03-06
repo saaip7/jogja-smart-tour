@@ -50,7 +50,7 @@ export const BerandaDestinasi = () => {
     activeCategory === "Semua" ? destinations : destinations.filter((dest) => dest.category === activeCategory)
 
   return (
-    <section className="py-12 px-8 mx-auto mx-12 my-12">
+    <section id="rekomendasi" className="py-12 px-8 mx-auto mx-12 my-12">
       <h2 className="text-4xl font-semibold text-center mb-10 text-neutral-900">
         Top Destinasi Wisata di Yogyakarta
       </h2>

@@ -41,7 +41,7 @@ export default function Navbar() {
           Beranda
         </Link>
         <Link
-          href="/rekomendasi"
+          href="#rekomendasi"
           className="text-neutral-900 hover:text-primary-700 font-medium"
         >
           Rekomendasi
