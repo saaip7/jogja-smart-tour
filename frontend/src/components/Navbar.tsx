@@ -15,7 +15,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { OwnButton } from "@/components/OwnButton";
 
 export default function Navbar() {
   const { user, logout, login } = useAuth();
@@ -90,9 +89,9 @@ export default function Navbar() {
           <>
             <AlertDialog>
               <AlertDialogTrigger>
-                <OwnButton className="bg-primary-500 text-white px-10 py-2 rounded-lg hover:bg-primary-700 font-medium">
+                <div className="bg-primary-500 text-white px-10 py-2 rounded-lg hover:bg-primary-700 font-medium">
                   Masuk
-                </OwnButton>
+                </div>
               </AlertDialogTrigger>
               <AlertDialogContent className="w-[20.563rem]">
                 <AlertDialogHeader>
