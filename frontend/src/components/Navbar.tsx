@@ -89,7 +89,7 @@ export default function Navbar() {
           <>
             <AlertDialog>
               <AlertDialogTrigger>
-                <div className="bg-primary-500 text-white px-10 py-2 rounded-lg hover:bg-primary-700 font-medium">
+                <div className="bg-primary-500 text-white hover:bg-[#0E6095] active:bg-[#1269A0] px-10 py-2 rounded-lg font-medium">
                   Masuk
                 </div>
               </AlertDialogTrigger>
