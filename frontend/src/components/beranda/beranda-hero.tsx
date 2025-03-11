@@ -41,9 +41,7 @@ export const BerandaHero = () => {
             Rancang Sesuai Gaya <br />
             Liburanmu!
           </h1>
-          <OwnButton className="w-[fit-content] mt-2">
-            Mulai Sekarang
-          </OwnButton>
+          <OwnButton className="w-[fit-content] mt-2">Mulai Sekarang</OwnButton>
         </div>
       </div>
     </section>
