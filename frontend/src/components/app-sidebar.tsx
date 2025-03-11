@@ -5,7 +5,6 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarRail,
-  SidebarProvider,
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
@@ -76,10 +75,18 @@ export function AppSidebar({
           <SidebarGroupContent>
             <SidebarMenu>
               {data.map((item) => (
-                <SidebarMenuItem key={item.title} className="">
+                <SidebarMenuItem
+                  key={item.title}
+                  className={` ${
+                    isCollapsed
+                      ? ""
+                      : "bg-primary-100 hover:bg-primary-300 text-primary-700 rounded-md self-center w-[13rem]"
+                  }`}
+                >
                   <SidebarMenuButton
                     asChild
                     onClick={() => item.konten && onSelect(item.konten)}
+                    className="flex justify-center"
                   >
                     <a href="#" onClick={(e) => e.preventDefault()}>
                       <item.icon />
@@ -95,7 +102,7 @@ export function AppSidebar({
 
       {/* Show NavUser in collapsed state */}
       {isCollapsed && (
-        <div className="mt-4 flex justify-center">
+        <div className="mt-4 ml-2 flex justify-center">
           <NavUser collapsed />
         </div>
       )}
@@ -103,7 +110,7 @@ export function AppSidebar({
       <Button
         onClick={() => logout()}
         className={`flex items-center rounded self-center mb-4 bg-primary-100 hover:bg-primary-300 text-primary-700 ${
-          isCollapsed ? "w-8 h-8 p-0 justify-center" : "w-[10rem] h-10"
+          isCollapsed ? "w-8 h-8 p-0 justify-center" : "w-[13rem] h-10"
         }`}
       >
         <LogOut className="shrink-0" />

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { data } from "@/components/app-sidebar";
 import Loading from "@/components/Loading";
 import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 // Create content components for each menu item
 const ContentMap: Record<string, React.ReactNode> = {
@@ -78,6 +79,9 @@ export default function Page() {
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
+            <Button className="bg-primary-500 hover:bg-primary-700">
+              <div className="font-medium">+ Rencana Baru</div>
+            </Button>
           </header>
           <Separator className="mt-2" />
 

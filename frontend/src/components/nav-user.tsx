@@ -1,14 +1,13 @@
 "use client";
 import { useAuth } from "@/contexts/AuthContext";
 
-import { ChevronsUpDown } from "lucide-react";
+// import { ChevronsUpDown } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -21,7 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 
 export function NavUser({ collapsed = false }: { collapsed?: boolean }) {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { isMobile } = useSidebar();
 
   if (!user) return null;
@@ -33,7 +32,7 @@ export function NavUser({ collapsed = false }: { collapsed?: boolean }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className={`data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${
+              className={`data-[state=open]:bg-sidebar-accent justify-center data-[state=open]:text-sidebar-accent-foreground ${
                 collapsed ? "flex-col !p-1" : ""
               }`}
             >
@@ -45,7 +44,7 @@ export function NavUser({ collapsed = false }: { collapsed?: boolean }) {
                   {user.image}
                 </AvatarFallback>
               </Avatar>
-              {!collapsed && (
+              {/* {!collapsed && (
                 <>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user.name}</span>
@@ -53,7 +52,7 @@ export function NavUser({ collapsed = false }: { collapsed?: boolean }) {
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
                 </>
-              )}
+              )} */}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -72,9 +71,6 @@ export function NavUser({ collapsed = false }: { collapsed?: boolean }) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => logout()}>
-              Log out
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
