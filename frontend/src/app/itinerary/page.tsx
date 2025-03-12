@@ -3,8 +3,10 @@ import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -13,18 +15,13 @@ import { data } from "@/components/app-sidebar";
 import Loading from "@/components/Loading";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { ChevronLeft } from "lucide-react";
+import { ItineraryList } from "@/components/ItineraryList";
+import CreateItinerary from "@/components/CreateItinerary";
 
 // Create content components for each menu item
 const ContentMap: Record<string, React.ReactNode> = {
-  "Konten 1": (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Jelajahi Wisata</h1>
-      <p className="mt-4">
-        Temukan tempat wisata menarik di Jogja dan rencanakan perjalanan Anda
-        dengan mudah.
-      </p>
-    </div>
-  ),
+  "Konten 1": <ItineraryList />,
   // Add more content components as needed
 };
 
@@ -41,6 +38,9 @@ export default function Page() {
     Array.isArray(data) && data.length > 0 ? data[0].title : "Dashboard"
   );
 
+  // Add state to track if we're in create mode
+  const [isCreating, setIsCreating] = useState(false);
+
   const { isAuthenticated } = useAuth();
 
   const handleSelect = (
@@ -48,6 +48,7 @@ export default function Page() {
   ) => {
     if (typeof KontenOrEvent === "string") {
       setSelectedMenu(KontenOrEvent);
+      setIsCreating(false); // Reset create mode when selecting from sidebar
 
       // Find the menu item with this konten value
       const activeItem = data.find((item) => item.konten === KontenOrEvent);
@@ -55,6 +56,23 @@ export default function Page() {
       if (activeItem) {
         setActivePage(activeItem.title);
       }
+    }
+  };
+
+  // Handle create button click
+  const handleCreateNew = () => {
+    setIsCreating(true);
+    setActivePage("Buat Rencana Baru");
+  };
+
+  // Handle back button click
+  const handleBack = () => {
+    setIsCreating(false);
+
+    // Restore the previous active page and menu
+    if (Array.isArray(data) && data.length > 0) {
+      setActivePage(data[0].title);
+      setSelectedMenu(data[0].konten);
     }
   };
 
@@ -69,25 +87,49 @@ export default function Page() {
         <div className="flex-1 flex flex-col h-full overflow-hidden">
           <header className="flex justify-between pr-5 h-16 shrink-0 items-center gap-2">
             <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
+              <SidebarTrigger className="-ml-1 text-primary-700" />
               <Separator orientation="vertical" className="mr-2 h-4" />
               <Breadcrumb>
                 <BreadcrumbList>
+                  {isCreating && (
+                    <>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink
+                          onClick={handleBack}
+                          className="flex items-center text-primary-500 hover:text-primary-700"
+                        >
+                          <div className="flex items-center gap-1 w-6 h-6 bg-primary-100 justify-center rounded">
+                            <ChevronLeft className="w-4 h-4" strokeWidth={3} />
+                          </div>
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator />
+                    </>
+                  )}
                   <BreadcrumbItem>
-                    <BreadcrumbPage>{activePage}</BreadcrumbPage>
+                    <BreadcrumbPage className="text-xl text-primary-500 font-semibold">
+                      {activePage}
+                    </BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
-            <Button className="bg-primary-500 hover:bg-primary-700">
-              <div className="font-medium">+ Rencana Baru</div>
-            </Button>
+            {!isCreating && (
+              <Button
+                className="bg-primary-500 hover:bg-primary-700"
+                onClick={handleCreateNew}
+              >
+                <div className="font-medium">+ Rencana Baru</div>
+              </Button>
+            )}
           </header>
           <Separator className="mt-2" />
 
           {/* Content area */}
           <div className="flex-1 overflow-auto">
-            {selectedMenu && ContentMap[selectedMenu] ? (
+            {isCreating ? (
+              <CreateItinerary onBack={handleBack} />
+            ) : selectedMenu && ContentMap[selectedMenu] ? (
               ContentMap[selectedMenu]
             ) : (
               <div className="p-6">
