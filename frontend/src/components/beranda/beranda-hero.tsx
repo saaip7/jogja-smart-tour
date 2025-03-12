@@ -9,7 +9,7 @@ export const BerandaHero = () => {
         <Image
           src="/beranda/hero-base.png"
           alt="hero"
-          objectFit="cover"
+          style={{ objectFit: "cover" }}
           width={3500}
           height={0}
           draggable={false}
@@ -41,7 +41,9 @@ export const BerandaHero = () => {
             Rancang Sesuai Gaya <br />
             Liburanmu!
           </h1>
-          <OwnButton className="w-[fit-content] mt-2">Mulai Sekarang</OwnButton>
+          <OwnButton className="w-[fit-content] mt-2">
+            Mulai Sekarang
+          </OwnButton>
         </div>
       </div>
     </section>

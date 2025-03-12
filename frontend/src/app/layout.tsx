@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
+import DataDrivenChatbot from "@/components/DataDrivenChatbot";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -23,11 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body
-        className={`${poppins.className} antialiased min-h-screen flex flex-col`}
-      >
+      <body className={`${poppins.className} antialiased`}>
         <AuthProvider>
-          <main className="flex-grow">{children}</main>
+          {children}
+          <DataDrivenChatbot />
         </AuthProvider>
       </body>
     </html>
