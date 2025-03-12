@@ -10,24 +10,17 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import { data } from "@/components/app-sidebar";
 import Loading from "@/components/Loading";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
-import { ItineraryList } from "@/components/ItineraryList";
 import CreateItinerary from "@/components/CreateItinerary";
-
-// Create content components for each menu item
-const ContentMap: Record<string, React.ReactNode> = {
-  "Konten 1": <ItineraryList />,
-  // Add more content components as needed
-};
 
 export default function Page() {
   // Check if data is an array and has elements before accessing
-  const [selectedMenu, setSelectedMenu] = useState<string | null>(
+  const [selectedMenu, setSelectedMenu] = useState<ReactNode | null>(
     Array.isArray(data) && data.length > 0 && data[0].konten
       ? data[0].konten
       : null
@@ -44,14 +37,14 @@ export default function Page() {
   const { isAuthenticated } = useAuth();
 
   const handleSelect = (
-    KontenOrEvent: string | React.SyntheticEvent<HTMLDivElement>
+    konten: ReactNode | React.SyntheticEvent<HTMLDivElement>
   ) => {
-    if (typeof KontenOrEvent === "string") {
-      setSelectedMenu(KontenOrEvent);
+    if (React.isValidElement(konten) || typeof konten === "string") {
+      setSelectedMenu(konten);
       setIsCreating(false); // Reset create mode when selecting from sidebar
 
       // Find the menu item with this konten value
-      const activeItem = data.find((item) => item.konten === KontenOrEvent);
+      const activeItem = data.find((item) => item.konten === konten);
 
       if (activeItem) {
         setActivePage(activeItem.title);
@@ -129,8 +122,8 @@ export default function Page() {
           <div className="flex-1 overflow-auto">
             {isCreating ? (
               <CreateItinerary onBack={handleBack} />
-            ) : selectedMenu && ContentMap[selectedMenu] ? (
-              ContentMap[selectedMenu]
+            ) : selectedMenu ? (
+              selectedMenu
             ) : (
               <div className="p-6">
                 <h1 className="text-2xl font-bold">

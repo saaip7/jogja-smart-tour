@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from "@/components/ui/sidebar";
-import React from "react";
+import React, { ReactNode } from "react";
 
 import { NavUser } from "@/components/nav-user";
 import { useAuth } from "@/contexts/AuthContext";
@@ -21,23 +21,26 @@ import Image from "next/image";
 import { LogOut, BookText } from "lucide-react";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
+import { ItineraryList } from "./ItineraryList";
 
+// Updated data structure to include React components directly
 export const data = [
   {
     title: "Jelajahi",
     url: "#",
     icon: BookText,
-    konten: "Konten 1",
+    konten: <ItineraryList />, // Direct component reference instead of string
     isActive: true,
   },
+  // Add more menu items here as needed
 ];
 
-export function AppSidebar({
-  onSelect,
-  ...props
-}: { onSelect: (konten: string) => void } & React.ComponentProps<
-  typeof Sidebar
->) {
+interface AppSidebarProps {
+  onSelect: (konten: ReactNode) => void; // Updated to accept ReactNode
+  className?: string;
+}
+
+export function AppSidebar({ onSelect, ...props }: AppSidebarProps) {
   const { logout } = useAuth();
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
