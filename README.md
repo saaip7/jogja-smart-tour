@@ -5,3 +5,4 @@ Kelompok Warlok
 Ketua Kelompok: Muhammad Grandiv Lava Putra - 22/493242/TK/54023
 - Anggota 1: Syaifullah Hilmi Ma'arij
 - Anggota 2: Muhammad Grandiv Lava Putra - 22/493242/TK/54023
+- Anggota 3: Muhammad Farrel Akbar - 22/492806/TK/53947
