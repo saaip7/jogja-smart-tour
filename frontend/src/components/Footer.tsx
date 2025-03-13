@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold mb-2">Siap Memulai Perjalananmu Di Jogja?</h2>
           <p className="text-lg mb-6">Masih ragu? Masih ga yakin? Masih takut mencoba?</p>
-          <OwnButton className="bg-white text-primary-700 hover:bg-gray-100">
+          <OwnButton variant={'white'}>
             Coba-in Dulu!
           </OwnButton>
         </div>
