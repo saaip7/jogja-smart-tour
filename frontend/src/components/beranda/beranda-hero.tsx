@@ -4,7 +4,7 @@ import { OwnButton } from "../OwnButton";
 
 export const BerandaHero = () => {
   return (
-    <section className="relative w-full pt-10 h-[fit-content]">
+    <section className="relative w-full pt-16 h-[fit-content]">
       <div className="mx-12 relative">
         <Image
           src="/beranda/hero-base.png"
