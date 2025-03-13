@@ -50,7 +50,7 @@ export default function Navbar() {
             Rekomendasi
           </Link>
           <Link
-            href="/tentang-kami"
+            href="#tentang-kami"
             className="text-neutral-900 hover:text-primary-700 font-medium"
           >
             Tentang Kami
