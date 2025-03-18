@@ -114,8 +114,6 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
 
   return (
     <div className="max-w-2xl p-4 md:p-6">
-      <h2 className="text-2xl font-bold mb-6">Create New Itinerary</h2>
-
       <div className="space-y-6 p-0">
         {/* Title Field */}
         <div className="space-y-2 md:flex-row md:flex md:space-y-0">
@@ -155,13 +153,18 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
           >
             Budget
           </label>
-          <Input
-            id="budget"
-            placeholder="Berapa budget Anda? (dalam Rupiah)"
-            value={budget}
-            onChange={(e) => setBudget(e.target.value)}
-            type="number"
-          />
+          <div className="flex w-full">
+            <div className="flex  items-center justify-center px-3 border border-r-0 rounded-l-md bg-gray-50">
+              Rp
+            </div>
+            <Input
+              id="budget"
+              placeholder="Berapa budget Anda? (dalam Rupiah)"
+              value={budget}
+              onChange={(e) => setBudget(e.target.value)}
+              type="number"
+            />
+          </div>
         </div>
 
         {/* Date Field */}
@@ -197,7 +200,7 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
           >
             Lama Perjalanan
           </label>
-          <div className="flex items-center">
+          <div className="flex items-center w-full">
             <Input
               id="duration"
               value={duration}
@@ -216,14 +219,14 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
           <label className="block text-md font-medium md:w-1/3">
             Jenis Wisata
           </label>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 w-full">
             {tripTypes.map((type) => (
               <Button
                 key={type}
                 type="button"
-                variant={selectedTypes.includes(type) ? "default" : "outline"}
+                variant={selectedTypes.includes(type) ? "selected" : "outline"}
                 onClick={() => toggleTripType(type)}
-                className="mb-2"
+                className="flex-grow sm:flex-grow-0 rounded-3xl"
               >
                 {type}
               </Button>
@@ -232,12 +235,13 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-between pt-4">
-          <Button variant="outline" onClick={onBack}>
-            Kembali
-          </Button>
-          <Button onClick={handleSubmit} disabled={isLoading}>
-            {isLoading ? "Creating..." : "Create Itinerary"}
+        <div className="flex justify-end pt-4">
+          <Button
+            onClick={handleSubmit}
+            disabled={isLoading}
+            className="w-32 bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            {isLoading ? "Sedang Membuat..." : "Buat Rencana"}
           </Button>
         </div>
       </div>

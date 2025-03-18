@@ -71,11 +71,6 @@ export default function ItineraryList() {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Your Itineraries</h1>
-        <Button onClick={() => setShowCreateForm(true)}>Create New</Button>
-      </div>
-
       {error && (
         <Alert variant="destructive" className="mb-6">
           <AlertCircle className="h-4 w-4" />
@@ -107,11 +102,14 @@ export default function ItineraryList() {
       ) : (
         <div className="text-center py-12">
           <p className="text-lg text-muted-foreground mb-6">
-            You haven&apos;t created any itineraries yet.
+            Kamu belum memiliki itinerary
           </p>
-          <Button onClick={() => setShowCreateForm(true)}>
+          {/* <Button
+            onClick={() => setShowCreateForm(true)}
+            className="bg-primary-500 hover:bg-primary-700"
+          >
             Create Your First Itinerary
-          </Button>
+          </Button> */}
         </div>
       )}
     </div>
