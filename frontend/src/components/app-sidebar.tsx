@@ -21,7 +21,7 @@ import Image from "next/image";
 import { LogOut, BookText } from "lucide-react";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import { ItineraryList } from "./ItineraryList";
+import ItineraryList from "./ItineraryList";
 
 // Updated data structure to include React components directly
 export const data = [

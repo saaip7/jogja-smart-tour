@@ -10,13 +10,14 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { useState, ReactNode } from "react";
+import React, { useState, ReactNode } from "react";
 import { data } from "@/components/app-sidebar";
 import Loading from "@/components/Loading";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import CreateItinerary from "@/components/CreateItinerary";
+import ItineraryList from "@/components/ItineraryList";
 
 export default function Page() {
   // Check if data is an array and has elements before accessing
@@ -125,13 +126,8 @@ export default function Page() {
             ) : selectedMenu ? (
               selectedMenu
             ) : (
-              <div className="p-6">
-                <h1 className="text-2xl font-bold">
-                  Selamat datang di Jogja Smart Tour
-                </h1>
-                <p className="mt-4">
-                  Silakan pilih menu di sidebar untuk melihat konten.
-                </p>
+              <div className="p-4">
+                Pilih menu di samping untuk melihat konten
               </div>
             )}
           </div>

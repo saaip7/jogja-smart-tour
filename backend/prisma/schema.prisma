@@ -56,6 +56,7 @@ model estimasi_biaya {
 
 model itinerary {
   id                Int      @id @default(autoincrement())
+  title             String   @db.VarChar(255)
   user_id           String   @db.VarChar(50)
   preferensi_id     Int
   total_biaya       Decimal  @db.Decimal(10, 2)
