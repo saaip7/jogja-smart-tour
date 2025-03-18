@@ -4,6 +4,7 @@ import cors from "cors";
 import passport from "passport";
 import configurePassport from "./config/passport";
 import authRoutes from "./routes/auth.routes";
+import itineraryRoutes from "./routes/itinerary.routes";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(passport.initialize());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/itinerary", itineraryRoutes);
 
 // Other routes...
 

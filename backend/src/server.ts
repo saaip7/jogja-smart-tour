@@ -10,6 +10,7 @@ import { PrismaClient } from "@prisma/client";
 
 import configurePassport from "./config/passport";
 import authRoutes from "./routes/auth.routes";
+import itineraryRoutes from "./routes/itinerary.routes";
 
 // Initialize Prisma client
 const prisma = new PrismaClient();
@@ -50,6 +51,7 @@ async function main() {
 
   // Routes
   app.use("/api/auth", authRoutes);
+  app.use("/api/itinerary", itineraryRoutes);
 
   // Basic health check route
   app.get("/health", (req, res) => {

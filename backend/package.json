@@ -16,7 +16,8 @@
   "description": "",
   "dependencies": {
     "@azure/ai-text-analytics": "^5.1.0",
-    "@azure/identity": "^4.7.0",
+    "@azure/identity": "^4.8.0",
+    "@azure/openai": "^2.0.0",
     "compression": "^1.8.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -26,7 +27,7 @@
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "openai": "^4.86.1",
+    "openai": "^4.87.3",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.13.3",
