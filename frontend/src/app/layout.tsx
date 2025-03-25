@@ -1,8 +1,10 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import DataDrivenChatbot from "@/components/DataDrivenChatbot";
+import { Toaster } from "@/components/ui/toaster";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,6 +30,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
           <DataDrivenChatbot />
+          <Toaster />
         </AuthProvider>
       </body>
     </html>

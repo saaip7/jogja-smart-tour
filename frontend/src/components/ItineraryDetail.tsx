@@ -1,3 +1,4 @@
+// src/components/ItineraryDetail.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -28,7 +29,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-// import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ItineraryDetailPage() {
   const { itineraryId } = useParams();
@@ -38,7 +39,7 @@ export default function ItineraryDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deletingItinerary, setDeletingItinerary] = useState(false);
-  //   const { toast } = useToast();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (itineraryId) {
@@ -54,6 +55,11 @@ export default function ItineraryDetailPage() {
     } catch (err) {
       console.error("Error fetching itinerary:", err);
       setError("Failed to load itinerary details.");
+      toast({
+        title: "Error",
+        description: "Gagal memuat detail itinerary",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -64,19 +70,28 @@ export default function ItineraryDetailPage() {
 
     try {
       setDeletingItinerary(true);
+      toast({
+        title: "Menghapus itinerary",
+        description: "Harap tunggu...",
+        variant: "default",
+      });
+      
       await ItineraryService.deleteItinerary(itinerary.id);
-      //   toast({
-      //     title: "Success",
-      //     description: "Itinerary has been deleted",
-      //   });
+      
+      toast({
+        title: "Berhasil",
+        description: "Itinerary telah dihapus",
+        variant: "success",
+      });
+      
       router.push("/itinerary");
     } catch (err) {
       console.error("Error deleting itinerary:", err);
-      //   toast({
-      //     title: "Error",
-      //     description: "Failed to delete itinerary",
-      //     variant: "destructive",
-      //   });
+      toast({
+        title: "Error",
+        description: "Gagal menghapus itinerary",
+        variant: "destructive",
+      });
     } finally {
       setDeletingItinerary(false);
       setShowDeleteDialog(false);
@@ -115,7 +130,7 @@ export default function ItineraryDetailPage() {
           <AlertDescription>{error || "Itinerary not found"}</AlertDescription>
         </Alert>
         <Button className="mt-4" onClick={() => router.push("/itinerary")}>
-          <ChevronLeft className="mr-2 h-4 w-4" /> Back to Itineraries
+          <ChevronLeft className="mr-2 h-4 w-4" /> Kembali ke daftar itinerary
         </Button>
       </div>
     );
@@ -126,21 +141,19 @@ export default function ItineraryDetailPage() {
       {/* Header with back button and delete button */}
       <div className="flex items-center justify-between mb-6">
         <Button variant="outline" onClick={() => router.push("/itinerary")}>
-          <ChevronLeft className="mr-2 h-4 w-4" /> Back
+          <ChevronLeft className="mr-2 h-4 w-4" /> Kembali
         </Button>
-
         <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
           <DialogTrigger asChild>
             <Button variant="destructive">
-              <Trash2 className="mr-2 h-4 w-4" /> Delete Itinerary
+              <Trash2 className="mr-2 h-4 w-4" /> Hapus Itinerary
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Are you sure?</DialogTitle>
+              <DialogTitle>Apakah Anda yakin?</DialogTitle>
               <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                itinerary.
+                Tindakan ini tidak dapat dibatalkan. Itinerary akan dihapus secara permanen.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -148,14 +161,14 @@ export default function ItineraryDetailPage() {
                 variant="outline"
                 onClick={() => setShowDeleteDialog(false)}
               >
-                Cancel
+                Batal
               </Button>
               <Button
                 variant="destructive"
                 onClick={handleDeleteItinerary}
                 disabled={deletingItinerary}
               >
-                {deletingItinerary ? "Deleting..." : "Delete"}
+                {deletingItinerary ? "Menghapus..." : "Hapus"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -172,7 +185,7 @@ export default function ItineraryDetailPage() {
         {/* Trip details card */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Trip Details</CardTitle>
+            <CardTitle className="text-lg">Detail Perjalanan</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex items-center">
@@ -186,7 +199,7 @@ export default function ItineraryDetailPage() {
             </div>
             <div className="flex items-center">
               <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
-              <span>{itinerary.preferensi_wisata.durasi_hari} days</span>
+              <span>{itinerary.preferensi_wisata.durasi_hari} hari</span>
             </div>
             <div className="flex flex-wrap gap-1 mt-2">
               {typeof itinerary.preferensi_wisata.jenis_wisata === "string"
@@ -215,25 +228,25 @@ export default function ItineraryDetailPage() {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex items-center justify-between">
-              <span>Transportation</span>
+              <span>Transportasi</span>
               <span>
                 {formatRupiah(itinerary.estimasi_biaya[0]?.transportasi || 0)}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span>Accommodation</span>
+              <span>Akomodasi</span>
               <span>
                 {formatRupiah(itinerary.estimasi_biaya[0]?.akomodasi || 0)}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span>Food</span>
+              <span>Makanan</span>
               <span>
                 {formatRupiah(itinerary.estimasi_biaya[0]?.makan || 0)}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span>Entrance Tickets</span>
+              <span>Tiket Masuk</span>
               <span>
                 {formatRupiah(itinerary.estimasi_biaya[0]?.tiket_wisata || 0)}
               </span>
@@ -249,27 +262,26 @@ export default function ItineraryDetailPage() {
         {/* Notes card */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Notes</CardTitle>
+            <CardTitle className="text-lg">Catatan</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
               {itinerary.notes ||
-                "This itinerary was generated based on your preferences for Yogyakarta trip."}
+                "Itinerary ini dibuat berdasarkan preferensi perjalanan Anda ke Yogyakarta."}
             </p>
           </CardContent>
         </Card>
       </div>
 
       {/* Daily itinerary */}
-      <h2 className="text-2xl font-bold mb-4">Itinerary Plan</h2>
-
+      <h2 className="text-2xl font-bold mb-4">Rencana Perjalanan</h2>
       {groupedByDay && Object.keys(groupedByDay).length > 0 ? (
-        Object.entries(groupedByDay)
-          .sort(([dayA], [dayB]) => parseInt(dayA) - parseInt(dayB))
-          .map(([day, details]: [string, any[]]) => (
+        (Object.entries(groupedByDay) as [string, any[]][])
+                  .sort(([dayA], [dayB]) => parseInt(dayA) - parseInt(dayB))
+                  .map(([day, details]) => (
             <Card key={day} className="mb-6">
               <CardHeader>
-                <CardTitle>Day {day}</CardTitle>
+                <CardTitle>Hari {day}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -288,7 +300,7 @@ export default function ItineraryDetailPage() {
                       <div className="flex items-center text-sm text-muted-foreground mt-1">
                         <DollarSign className="h-4 w-4 mr-1" />
                         <span>
-                          Entrance fee:{" "}
+                          Tiket masuk:{" "}
                           {formatRupiah(detail.destinasi.harga_tiket)}
                         </span>
                       </div>
@@ -304,9 +316,9 @@ export default function ItineraryDetailPage() {
       ) : (
         <Alert>
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>No destinations</AlertTitle>
+          <AlertTitle>Tidak ada destinasi</AlertTitle>
           <AlertDescription>
-            This itinerary doesn&apos;t have any destinations yet.
+            Itinerary ini belum memiliki destinasi.
           </AlertDescription>
         </Alert>
       )}
