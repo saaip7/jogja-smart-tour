@@ -278,7 +278,7 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
             disabled={isLoading}
             className="w-32 bg-blue-600 hover:bg-blue-700 text-white"
           >
-            {isLoading ? "Sedang Membuat..." : "Buat Rencana"}
+            {isLoading ? "Membuat..." : "Buat Rencana"}
           </Button>
         </div>
       </div>

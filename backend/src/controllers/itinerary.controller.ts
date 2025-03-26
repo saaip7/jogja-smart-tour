@@ -14,7 +14,7 @@ export const createItineraryWithAI = async (req: Request, res: Response) => {
 
     const { title, preferences, budget, date, tripTypes, duration } = req.body;
 
-    // First create user preference if it doesn't exist
+    // Create user preference record
     const preference = await prisma.preferensi_wisata.create({
       data: {
         user_id: req.user.id,
@@ -25,7 +25,7 @@ export const createItineraryWithAI = async (req: Request, res: Response) => {
       },
     });
 
-    // Call Azure AI to generate itinerary
+    // Generate itinerary from Azure AI
     const generatedItinerary = await azureAIService.generateItinerary({
       title,
       preferences,
@@ -35,12 +35,11 @@ export const createItineraryWithAI = async (req: Request, res: Response) => {
       duration,
     });
 
-    // Calculate total costs from destinations
     const totalBiaya = generatedItinerary.estimatedCosts.total_biaya;
 
-    // Create itinerary in database using transaction
+    // Create itinerary and related records within a transaction
     const newItinerary = await prisma.$transaction(async (tx) => {
-      // Create main itinerary record
+      // Create the main itinerary record
       const itinerary = await tx.itinerary.create({
         data: {
           title: title,
@@ -50,7 +49,7 @@ export const createItineraryWithAI = async (req: Request, res: Response) => {
         },
       });
 
-      // Create cost estimates
+      // Save the cost estimates
       await tx.estimasi_biaya.create({
         data: {
           itinerary_id: itinerary.id,
@@ -62,13 +61,23 @@ export const createItineraryWithAI = async (req: Request, res: Response) => {
         },
       });
 
-      // Create itinerary details for each destination
+      // For each destination returned by AI, create a new destinasi record and then itinerary_detail
       for (const dest of generatedItinerary.destinations) {
+        const newDestination = await tx.destinasi.create({
+          data: {
+            nama_destinasi: dest.nama_destinasi,
+            lokasi: dest.lokasi,
+            kategori: dest.kategori,
+            harga_tiket: dest.harga_tiket,
+            rating: dest.rating,
+          },
+        });
+
         await tx.itinerary_detail.create({
           data: {
             itinerary_id: itinerary.id,
             preferensi_id: preference.id,
-            destinasi_id: dest.destinasi_id,
+            destinasi_id: newDestination.id,
             urutan_hari: dest.urutan_hari,
           },
         });
@@ -77,7 +86,7 @@ export const createItineraryWithAI = async (req: Request, res: Response) => {
       return itinerary;
     });
 
-    // Fetch complete itinerary with all relations
+    // Fetch complete itinerary with all relations to return to frontend
     const completeItinerary = await prisma.itinerary.findUnique({
       where: { id: newItinerary.id },
       include: {
@@ -101,27 +110,21 @@ export const createItineraryWithAI = async (req: Request, res: Response) => {
   }
 };
 
-// Get all itineraries for the current user
+// Other controller functions remain unchanged...
 export const getUserItineraries = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
       res.status(401).json({ message: "User not authenticated" });
       return;
     }
-
     const itineraries = await prisma.itinerary.findMany({
-      where: {
-        user_id: req.user.id,
-      },
+      where: { user_id: req.user.id },
       include: {
         preferensi_wisata: true,
         estimasi_biaya: true,
       },
-      orderBy: {
-        created_at: "desc",
-      },
+      orderBy: { created_at: "desc" },
     });
-
     res.json(itineraries);
   } catch (error) {
     console.error("Error fetching user itineraries:", error);
@@ -129,41 +132,29 @@ export const getUserItineraries = async (req: Request, res: Response) => {
   }
 };
 
-// Get itinerary by ID
 export const getItineraryById = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
       res.status(401).json({ message: "User not authenticated" });
       return;
     }
-
     const { id } = req.params;
     const itineraryId = parseInt(id);
-
     const itinerary = await prisma.itinerary.findFirst({
-      where: {
-        id: itineraryId,
-        user_id: req.user.id,
-      },
+      where: { id: itineraryId, user_id: req.user.id },
       include: {
         preferensi_wisata: true,
         estimasi_biaya: true,
         itinerary_detail: {
-          include: {
-            destinasi: true,
-          },
-          orderBy: {
-            urutan_hari: "asc",
-          },
+          include: { destinasi: true },
+          orderBy: { urutan_hari: "asc" },
         },
       },
     });
-
     if (!itinerary) {
       res.status(404).json({ message: "Itinerary not found" });
       return;
     }
-
     res.json(itinerary);
   } catch (error) {
     console.error("Error fetching itinerary by ID:", error);
@@ -171,31 +162,21 @@ export const getItineraryById = async (req: Request, res: Response) => {
   }
 };
 
-// Delete itinerary
 export const deleteItinerary = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
       res.status(401).json({ message: "User not authenticated" });
       return;
     }
-
     const { id } = req.params;
     const itineraryId = parseInt(id);
-
-    // Check if itinerary exists and belongs to the user
     const itinerary = await prisma.itinerary.findFirst({
-      where: {
-        id: itineraryId,
-        user_id: req.user.id,
-      },
+      where: { id: itineraryId, user_id: req.user.id },
     });
-
     if (!itinerary) {
       res.status(404).json({ message: "Itinerary not found" });
       return;
     }
-
-    // Delete related records in transaction
     await prisma.$transaction([
       prisma.itinerary_detail.deleteMany({
         where: { itinerary_id: itineraryId },
@@ -203,11 +184,8 @@ export const deleteItinerary = async (req: Request, res: Response) => {
       prisma.estimasi_biaya.deleteMany({
         where: { itinerary_id: itineraryId },
       }),
-      prisma.itinerary.delete({
-        where: { id: itineraryId },
-      }),
+      prisma.itinerary.delete({ where: { id: itineraryId } }),
     ]);
-
     res.json({ message: "Itinerary deleted successfully" });
   } catch (error) {
     console.error("Error deleting itinerary:", error);
@@ -215,8 +193,6 @@ export const deleteItinerary = async (req: Request, res: Response) => {
   }
 };
 
-// Create a regular itinerary (without AI)
 export const createItinerary = async (req: Request, res: Response) => {
-  // Implementation for manual creation if needed
   res.status(501).json({ message: "Not implemented" });
 };
