@@ -36,16 +36,16 @@ export default function ItineraryList() {
   const fetchItineraries = async () => {
     try {
       setLoading(true);
-      
+
       // Show toast for loading state
       toast({
         title: "Memuat data",
         description: "Sedang mengambil daftar itinerary...",
         variant: "default",
       });
-      
+
       const data = await ItineraryService.getUserItineraries();
-      
+
       const formattedData = data.map((item) => ({
         ...item,
         preferensi_wisata: {
@@ -55,10 +55,10 @@ export default function ItineraryList() {
             : item.preferensi_wisata.jenis_wisata.split(","),
         },
       }));
-      
+
       setItineraries(formattedData);
       setError(null);
-      
+
       // Show success toast if data was loaded successfully
       if (data.length > 0) {
         toast({
@@ -70,7 +70,7 @@ export default function ItineraryList() {
     } catch (err) {
       console.error("Error fetching itineraries:", err);
       setError("Gagal memuat daftar itinerary. Silakan coba lagi.");
-      
+
       toast({
         title: "Error",
         description: "Gagal memuat daftar itinerary. Silakan coba lagi.",
@@ -136,12 +136,12 @@ export default function ItineraryList() {
       ) : itineraries.length > 0 ? (
         <>
           <div className="mb-6">
-            <Button
+            {/* <Button
               onClick={handleCreateNew}
               className="bg-primary-500 hover:bg-primary-700"
             >
               + Buat Itinerary Baru
-            </Button>
+            </Button> */}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {itineraries.map((itinerary) => (
