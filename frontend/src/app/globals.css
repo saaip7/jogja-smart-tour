@@ -82,3 +82,26 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Add this to the end of your globals.css file */
+@media print {
+  /* Base print styles */
+  @page {
+    size: A4;
+    margin: 1.5cm;
+  }
+  
+  body {
+    font-size: 12pt;
+    background: white !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .page-break-inside-avoid {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
