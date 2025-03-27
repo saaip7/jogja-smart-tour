@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
   	extend: {
+		screens: {
+			'sm2': '480px'
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
