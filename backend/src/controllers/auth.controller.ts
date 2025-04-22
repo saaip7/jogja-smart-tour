@@ -46,7 +46,7 @@ export const googleCallback = (req: Request, res: Response) => {
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   });
 
-  res.redirect(`${process.env.FRONTEND_URL}/`);
+  res.redirect(`${process.env.FRONTEND_URL}/itinerary`);
   return;
 };
 

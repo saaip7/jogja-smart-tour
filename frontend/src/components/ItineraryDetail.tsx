@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { ItineraryService } from "@/app/services/itinerary.service";
+import { Itinerary, ItineraryService } from "@/app/services/itinerary.service";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useToast } from "@/hooks/use-toast";
@@ -16,7 +16,7 @@ import { printStyles } from "./itinerary/itineraryPrintStyles";
 
 export default function ItineraryDetailPage() {
   const { itineraryId } = useParams();
-  const [itinerary, setItinerary] = useState<any>(null);
+  const [itinerary, setItinerary] = useState<Itinerary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -24,10 +24,27 @@ export default function ItineraryDetailPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (itineraryId) {
-      fetchItinerary(itineraryId as string);
-    }
-  }, [itineraryId]);
+    if (!itineraryId) return;
+    (async () => {
+      try {
+        setLoading(true);
+        const data = await ItineraryService.getItineraryById(
+          itineraryId as string
+        );
+        setItinerary(data);
+      } catch (err) {
+        console.error("Error fetching itinerary:", err);
+        setError("Failed to load itinerary details.");
+        toast({
+          title: "Error",
+          description: "Gagal memuat detail itinerary",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [itineraryId, toast]);
 
   // Simple print handler using native browser printing
   const handlePrint = () => {
@@ -36,11 +53,11 @@ export default function ItineraryDetailPage() {
       description: "Sedang menyiapkan itinerary untuk dicetak...",
       variant: "default",
     });
-    
+
     // Small delay to allow toast to display and then hide before printing
     setTimeout(() => {
       window.print();
-      
+
       // Toast after print dialog closes
       setTimeout(() => {
         toast({
@@ -52,24 +69,6 @@ export default function ItineraryDetailPage() {
     }, 500);
   };
 
-  const fetchItinerary = async (id: string) => {
-    try {
-      setLoading(true);
-      const data = await ItineraryService.getItineraryById(id);
-      setItinerary(data);
-    } catch (err) {
-      console.error("Error fetching itinerary:", err);
-      setError("Failed to load itinerary details.");
-      toast({
-        title: "Error",
-        description: "Gagal memuat detail itinerary",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleDeleteItinerary = async () => {
     if (!itinerary) return;
     try {
@@ -79,15 +78,15 @@ export default function ItineraryDetailPage() {
         description: "Harap tunggu...",
         variant: "default",
       });
-     
+
       await ItineraryService.deleteItinerary(itinerary.id);
-     
+
       toast({
         title: "Berhasil",
         description: "Itinerary telah dihapus",
         variant: "success",
       });
-     
+
       window.location.href = "/itinerary";
     } catch (err) {
       console.error("Error deleting itinerary:", err);
@@ -119,9 +118,14 @@ export default function ItineraryDetailPage() {
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{error || "Itinerary not found"}</AlertDescription>
+            <AlertDescription>
+              {error || "Itinerary not found"}
+            </AlertDescription>
           </Alert>
-          <Button className="mt-4" onClick={() => window.location.href = "/itinerary"}>
+          <Button
+            className="mt-4"
+            onClick={() => (window.location.href = "/itinerary")}
+          >
             Kembali ke daftar itinerary
           </Button>
         </div>
@@ -144,13 +148,15 @@ export default function ItineraryDetailPage() {
     <div className="flex h-screen w-full">
       <SidebarProvider>
         <AppSidebar onSelect={() => {}} className="h-full" />
-        <div className="flex-1 flex flex-col h-full overflow-hidden">
+        <div className="flex-1 flex flex-col h-full overflow-y-auto bg-gray-100">
           {renderContent()}
         </div>
       </SidebarProvider>
-      
+
       {/* Add print-specific CSS */}
-      <style jsx global>{printStyles}</style>
+      <style jsx global>
+        {printStyles}
+      </style>
     </div>
   );
 }
