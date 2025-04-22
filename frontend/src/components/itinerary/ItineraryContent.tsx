@@ -65,7 +65,7 @@ const ItineraryContent: React.FC<ItineraryContentProps> = ({
 
   return (
     <div className="w-full bg-gray-100 flex-1 overflow-y-auto">
-      <div className="max-w-screen-lg w-full mx-auto px-4 py-6">
+      <div className="w-full mx-auto px-4 py-6">
         {/* Navigation buttons - will be hidden during print */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 no-print gap-2">
           {/* Sidebar toggle for mobile */}
