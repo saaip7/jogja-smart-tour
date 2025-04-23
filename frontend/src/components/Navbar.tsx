@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { UserIcon } from "lucide-react";
 
 export default function Navbar() {
   const { user, logout, login } = useAuth();
@@ -65,6 +66,12 @@ export default function Navbar() {
             className="text-neutral-900 hover:text-primary-700 font-medium"
           >
             Beranda
+          </Link>
+          <Link
+            href="/destinations"
+            className="text-neutral-900 hover:text-primary-700 font-medium"
+          >
+            Destinasi
           </Link>
           <Link
             href="#rekomendasi"
@@ -192,6 +199,13 @@ export default function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Beranda
+                </Link>
+                <Link
+                  href="/destinations"
+                  className="px-4 py-3 text-neutral-900 hover:bg-gray-100 hover:text-primary-700 font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Destinasi
                 </Link>
                 <Link
                   href="#rekomendasi"

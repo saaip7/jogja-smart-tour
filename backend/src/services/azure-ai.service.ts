@@ -57,53 +57,62 @@ export class AzureAIService {
     try {
       // Updated prompt with full destination details.
       const promptText = `
-Generate a travel itinerary for a trip to Yogyakarta with the following details:
-Title: ${prompt.title}
-Preferences: ${prompt.preferences}
-Budget: ${prompt.budget} IDR
-Date: ${prompt.date}
-Trip Types: ${prompt.tripTypes.join(", ")}
-Duration: ${prompt.duration} days
-
-Your task is to create a detailed itinerary that includes:
-1. A list of at least 2 or 3 unique destinations each day. 
-   For each destination, provide:
-     - nama_destinasi
-     - lokasi
-     - kategori
-     - harga_tiket
-     - rating
-     - urutan_hari (which day)
-2. Estimated costs for transportation, accommodation, food, and entrance tickets
-
-IMPORTANT: You must respond with ONLY a valid JSON object having exactly this structure:
-{
-  "destinations": [
-    {
-      "nama_destinasi": string,
-      "lokasi": string,
-      "kategori": string,
-      "harga_tiket": number,
-      "rating": number,
-      "urutan_hari": number
-    },
-    ... (more destinations, at least 2 or 3 per day)
-  ],
-  "estimatedCosts": {
-    "transportasi": number,
-    "akomodasi": number,
-    "makan": number,
-    "tiket_wisata": number,
-    "total_biaya": number
-  }
-}
-
-DO NOT include any explanatory text before or after the JSON.
-DO NOT use markdown code blocks.
-DO NOT include the word "json" anywhere in your response.
-ONLY RETURN THE RAW JSON OBJECT.
-
-`;
+      Generate a travel itinerary for a trip to Yogyakarta with the following details:
+      
+      Title: ${prompt.title}
+      Preferences: ${prompt.preferences}
+      Budget: ${prompt.budget} IDR
+      Date: ${prompt.date}
+      Trip Types: ${prompt.tripTypes.join(", ")}
+      Duration: ${prompt.duration} days
+      
+      Your task is to create a detailed itinerary that includes:
+      
+      1. A list of at least 2 or 3 unique destinations each day.
+         For each destination, provide:
+           - nama_destinasi
+           - lokasi
+           - kategori
+           - harga_tiket
+           - rating
+           - urutan_hari (which day)
+           - latitude (for Yogyakarta area, between -7.75 and -7.85)
+           - longitude (for Yogyakarta area, between 110.3 and 110.5)
+      
+      2. Estimated costs for transportation, accommodation, food, and entrance tickets
+      
+      IMPORTANT: You must respond with ONLY a valid JSON object having exactly this structure:
+      
+      {
+        "destinations": [
+          {
+            "nama_destinasi": string,
+            "lokasi": string,
+            "kategori": string,
+            "harga_tiket": number,
+            "rating": number,
+            "urutan_hari": number,
+            "latitude": number,
+            "longitude": number
+          },
+          ... (more destinations, at least 2 or 3 per day)
+        ],
+        "estimatedCosts": {
+          "transportasi": number,
+          "akomodasi": number,
+          "makan": number,
+          "tiket_wisata": number,
+          "total_biaya": number
+        }
+      }
+      
+      Use realistic GPS coordinates for actual locations in Yogyakarta. Be precise with these coordinates.
+      
+      DO NOT include any explanatory text before or after the JSON.
+      DO NOT use markdown code blocks.
+      DO NOT include the word "json" anywhere in your response.
+      ONLY RETURN THE RAW JSON OBJECT.
+      `;
 
       console.log("Sending request to Azure OpenAI...");
 
@@ -112,7 +121,7 @@ ONLY RETURN THE RAW JSON OBJECT.
           {
             role: "system",
             content:
-              "You are an AI assistant that creates travel itineraries in Yogyakarta, Indonesia. You MUST respond with valid JSON only. No explanatory text, no markdown formatting. Just a pure JSON object.",
+              "You are an AI assistant that creates travel itineraries in Yogyakarta, Indonesia. You MUST respond with valid JSON only. No explanatory text, no markdown formatting. Just a pure JSON object. You have extensive knowledge of Yogyakarta's attractions, including their exact GPS coordinates. For landmarks like Borobudur Temple, use (-7.6079, 110.2038); for Prambanan Temple, use (-7.7520, 110.4914); for Malioboro Street, use (-7.7925, 110.3669); for Yogyakarta Palace, use (-7.8052, 110.3640). For beaches, mountains, and other attractions, use accurate coordinates within their respective areas.",
           },
           { role: "user", content: promptText },
         ],
