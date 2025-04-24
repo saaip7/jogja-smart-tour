@@ -1,0 +1,324 @@
+[
+    {
+      "name": "Yogyakarta",
+      "latitude": -7.7956,
+      "longitude": 110.3695,
+      "category": "city",
+      "description": "Main city center of Yogyakarta"
+    },
+    {
+      "name": "Sleman",
+      "latitude": -7.7167,
+      "longitude": 110.3500,
+      "category": "city",
+      "description": "Regency north of Yogyakarta"
+    },
+    {
+      "name": "Bantul",
+      "latitude": -7.8883,
+      "longitude": 110.3333,
+      "category": "city",
+      "description": "Regency south of Yogyakarta"
+    },
+    {
+      "name": "Kulon Progo",
+      "latitude": -7.8262,
+      "longitude": 110.1644,
+      "category": "city",
+      "description": "Regency west of Yogyakarta"
+    },
+    {
+      "name": "Gunung Kidul",
+      "latitude": -7.9917,
+      "longitude": 110.6167,
+      "category": "city",
+      "description": "Regency east of Yogyakarta"
+    },
+    {
+      "name": "Malioboro",
+      "latitude": -7.7930,
+      "longitude": 110.3659,
+      "category": "shopping",
+      "description": "Famous street for shopping and food"
+    },
+    {
+      "name": "Candi Prambanan",
+      "latitude": -7.7520,
+      "longitude": 110.4914,
+      "category": "temple",
+      "description": "9th-century Hindu temple compound"
+    },
+    {
+      "name": "Keraton Yogyakarta",
+      "latitude": -7.8052,
+      "longitude": 110.3640,
+      "category": "cultural",
+      "description": "Palace of the Sultanate of Yogyakarta"
+    },
+    {
+      "name": "Taman Sari",
+      "latitude": -7.8100,
+      "longitude": 110.3594,
+      "category": "cultural",
+      "description": "Royal garden of the Sultanate of Yogyakarta"
+    },
+    {
+      "name": "Candi Borobudur",
+      "latitude": -7.6079,
+      "longitude": 110.2038,
+      "category": "temple",
+      "description": "9th-century Buddhist temple"
+    },
+    {
+      "name": "Pantai Parangtritis",
+      "latitude": -8.0257,
+      "longitude": 110.3327,
+      "category": "beach",
+      "description": "Popular black sand beach"
+    },
+    {
+      "name": "Gunung Merapi",
+      "latitude": -7.5407,
+      "longitude": 110.4457,
+      "category": "mountain",
+      "description": "Active volcano north of Yogyakarta"
+    },
+    {
+      "name": "Alun-Alun Kidul",
+      "latitude": -7.8119,
+      "longitude": 110.3636,
+      "category": "park",
+      "description": "Southern city square with masangin tradition"
+    },
+    {
+      "name": "Goa Jomblang",
+      "latitude": -7.9688,
+      "longitude": 110.6811,
+      "category": "cave",
+      "description": "Vertical cave with light phenomenon"
+    },
+    {
+      "name": "Bukit Bintang",
+      "latitude": -7.8243,
+      "longitude": 110.4455,
+      "category": "viewpoint",
+      "description": "Hilltop with city views"
+    },
+    {
+      "name": "Tebing Breksi",
+      "latitude": -7.7764,
+      "longitude": 110.5119,
+      "category": "viewpoint",
+      "description": "Former limestone quarry turned tourist attraction"
+    },
+    {
+      "name": "Museum Ullen Sentalu",
+      "latitude": -7.6346,
+      "longitude": 110.4201,
+      "category": "museum",
+      "description": "Museum of Javanese culture and art"
+    },
+    {
+      "name": "Candi Ijo",
+      "latitude": -7.7841,
+      "longitude": 110.5130,
+      "category": "temple",
+      "description": "Hindu temple at high elevation"
+    },
+    {
+      "name": "Pantai Indrayanti",
+      "latitude": -8.1507,
+      "longitude": 110.6123,
+      "category": "beach",
+      "description": "Beach with clear water and white sand"
+    },
+    {
+      "name": "Kebun Teh Nglinggo",
+      "latitude": -7.6509,
+      "longitude": 110.1315,
+      "category": "nature",
+      "description": "Tea plantation with mountain views"
+    },
+    {
+      "name": "Hutan Pinus Pengger",
+      "latitude": -7.8689,
+      "longitude": 110.4752,
+      "category": "nature",
+      "description": "Pine forest with photo spots"
+    },
+    {
+      "name": "Gumuk Pasir Parangkusumo",
+      "latitude": -8.0294,
+      "longitude": 110.3288,
+      "category": "nature",
+      "description": "Sand dunes near Parangtritis Beach"
+    },
+    {
+      "name": "Jurang Tembelan",
+      "latitude": -7.9175,
+      "longitude": 110.0673,
+      "category": "viewpoint",
+      "description": "Cliff with panoramic views"
+    },
+    {
+      "name": "Kalibiru",
+      "latitude": -7.8065,
+      "longitude": 110.1272,
+      "category": "nature",
+      "description": "Nature park with photo platforms"
+    },
+    {
+      "name": "Pasar Beringharjo",
+      "latitude": -7.7986,
+      "longitude": 110.3656,
+      "category": "shopping",
+      "description": "Traditional market in Yogyakarta"
+    },
+    {
+      "name": "Pantai Depok",
+      "latitude": -8.0132,
+      "longitude": 110.3173,
+      "category": "beach",
+      "description": "Beach with fresh seafood market"
+    },
+    {
+      "name": "Desa Wisata Kasongan",
+      "latitude": -7.8521,
+      "longitude": 110.3486,
+      "category": "cultural",
+      "description": "Village known for pottery crafts"
+    },
+    {
+      "name": "Benteng Vredeburg",
+      "latitude": -7.8005,
+      "longitude": 110.3658,
+      "category": "museum",
+      "description": "Dutch colonial fort turned museum"
+    },
+    {
+      "name": "Kebun Buah Mangunan",
+      "latitude": -7.9334,
+      "longitude": 110.4251,
+      "category": "nature",
+      "description": "Fruit garden with hillside views"
+    },
+    {
+      "name": "Goa Pindul",
+      "latitude": -7.9463,
+      "longitude": 110.6547,
+      "category": "cave",
+      "description": "Cave with underground river for tubing"
+    },
+    {
+      "name": "Jogja Bay",
+      "latitude": -7.7557,
+      "longitude": 110.4101,
+      "category": "waterpark",
+      "description": "Pirate-themed waterpark"
+    },
+    {
+      "name": "Hutan Mangrove Kulon Progo",
+      "latitude": -7.9007,
+      "longitude": 110.0597,
+      "category": "nature",
+      "description": "Mangrove forest conservation area"
+    },
+    {
+      "name": "Puncak Becici",
+      "latitude": -7.8754,
+      "longitude": 110.4878,
+      "category": "viewpoint",
+      "description": "Hilltop viewpoint in pine forest"
+    },
+    {
+      "name": "Bukit Panguk Kediwung",
+      "latitude": -7.9463,
+      "longitude": 110.4504,
+      "category": "viewpoint",
+      "description": "Hill with views of Yogyakarta"
+    },
+    {
+      "name": "Museum Affandi",
+      "latitude": -7.7829,
+      "longitude": 110.3922,
+      "category": "museum",
+      "description": "Museum dedicated to painter Affandi"
+    },
+    {
+      "name": "Goa Cerme",
+      "latitude": -7.8883,
+      "longitude": 110.5009,
+      "category": "cave",
+      "description": "Cave with underground river"
+    },
+    {
+      "name": "Sendratari Ramayana",
+      "latitude": -7.7520,
+      "longitude": 110.4914,
+      "category": "cultural",
+      "description": "Traditional Ramayana ballet performance"
+    },
+    {
+      "name": "Air Terjun Sri Gethuk",
+      "latitude": -7.9512,
+      "longitude": 110.8152,
+      "category": "waterfall",
+      "description": "Waterfall in Gunungkidul"
+    },
+    {
+      "name": "Puncak Suroloyo",
+      "latitude": -7.6906,
+      "longitude": 110.2292,
+      "category": "viewpoint",
+      "description": "Hilltop with sunrise views"
+    },
+    {
+      "name": "Situs Ratu Boko",
+      "latitude": -7.7700,
+      "longitude": 110.4889,
+      "category": "archeological",
+      "description": "Ancient palace ruins"
+    },
+    {
+      "name": "Monumen Jogja Kembali",
+      "latitude": -7.7478,
+      "longitude": 110.3674,
+      "category": "museum",
+      "description": "Monument and museum of Indonesian history"
+    },
+    {
+      "name": "Pantai Glagah",
+      "latitude": -7.9146,
+      "longitude": 110.0547,
+      "category": "beach",
+      "description": "Beach with lagoon and sand dunes"
+    },
+    {
+      "name": "Kebun Bunga Amaryllis",
+      "latitude": -7.7119,
+      "longitude": 110.1954,
+      "category": "nature",
+      "description": "Seasonal amaryllis flower garden"
+    },
+    {
+      "name": "Wisata Kaliurang",
+      "latitude": -7.6533,
+      "longitude": 110.4264,
+      "category": "nature",
+      "description": "Mountain resort area on Merapi slopes"
+    },
+    {
+      "name": "Bukit Paralayang",
+      "latitude": -7.7833,
+      "longitude": 110.0864,
+      "category": "viewpoint",
+      "description": "Paragliding spot with mountain views"
+    },
+    {
+      "name": "Waduk Sermo",
+      "latitude": -7.8306,
+      "longitude": 110.1122,
+      "category": "lake",
+      "description": "Reservoir in Kulon Progo"
+    }
+  ]

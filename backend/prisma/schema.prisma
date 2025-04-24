@@ -86,12 +86,13 @@ model itinerary_detail {
 }
 
 model destinasi {
-  id                Int      @id @default(autoincrement())
-  nama_destinasi    String   @db.VarChar(255)
-  lokasi            String   @db.VarChar(255)
-  kategori          String   @db.VarChar(255)
-  harga_tiket       Decimal  @db.Decimal(10, 2)
-  rating            Decimal  @db.Decimal(3, 2)
-  
-  itinerary_detail  itinerary_detail[]
+  id Int @id @default(autoincrement())
+  nama_destinasi String @db.VarChar(255)
+  lokasi String @db.VarChar(255)
+  kategori String @db.VarChar(255)
+  harga_tiket Decimal @db.Decimal(10, 2)
+  rating Decimal @db.Decimal(3, 2)
+  latitude Decimal? @db.Decimal(10, 8) // Add this field
+  longitude Decimal? @db.Decimal(11, 8) // Add this field
+  itinerary_detail itinerary_detail[]
 }
