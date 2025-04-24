@@ -83,7 +83,7 @@ export const BerandaDestinasi = () => {
   }, [currentSlide]);
 
   return (
-    <section id="rekomendasi" className="py-12 px-12 md:px-24 mx-auto my-12">
+    <section id="rekomendasi" className="py-12 px-10 md:px-16 lg:px-24 mx-auto my-12">
       <h2 className="text-2xl md:text-4xl font-semibold text-center mb-6 md:mb-10 text-neutral-900">
         Top Destinasi Wisata di Yogyakarta
       </h2>
