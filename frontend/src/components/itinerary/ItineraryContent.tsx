@@ -29,13 +29,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Itinerary,
+  GroupedByDay,
+  ItineraryDetailItem,
+  DestinationWithDay,
+} from "@/types/itinerary";
+import Image from "next/image";
 
 const ItineraryMap = dynamic(() => import("@/components/ItineraryMap"), {
   ssr: false,
 });
 
 interface ItineraryContentProps {
-  itinerary: any;
+  itinerary: Itinerary;
   showDeleteDialog: boolean;
   setShowDeleteDialog: (show: boolean) => void;
   deletingItinerary: boolean;
@@ -53,19 +60,20 @@ const ItineraryContent: React.FC<ItineraryContentProps> = ({
 }) => {
   const router = useRouter();
   const [showMap, setShowMap] = React.useState(true);
-  const groupedByDay = itinerary?.itinerary_detail?.reduce(
-    (acc: any, detail: any) => {
-      const day = detail.urutan_hari;
-      if (!acc[day]) {
-        acc[day] = [];
-      }
-      acc[day].push(detail);
-      return acc;
-    },
-    {}
-  );
+  const groupedByDay: GroupedByDay =
+    itinerary?.itinerary_detail?.reduce(
+      (acc: GroupedByDay, detail: ItineraryDetailItem) => {
+        const day = detail.urutan_hari.toString();
+        if (!acc[day]) {
+          acc[day] = [];
+        }
+        acc[day].push(detail);
+        return acc;
+      },
+      {}
+    ) || {};
 
-  const days = Object.keys(groupedByDay || {}).map(day => parseInt(day));
+  const days = Object.keys(groupedByDay).map((day) => parseInt(day));
 
   return (
     <div className="container mx-auto p-4">
@@ -98,7 +106,8 @@ const ItineraryContent: React.FC<ItineraryContentProps> = ({
               <DialogHeader>
                 <DialogTitle>Apakah Anda yakin?</DialogTitle>
                 <DialogDescription>
-                  Tindakan ini tidak dapat dibatalkan. Itinerary akan dihapus secara permanen.
+                  Tindakan ini tidak dapat dibatalkan. Itinerary akan dihapus
+                  secara permanen.
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
@@ -124,10 +133,17 @@ const ItineraryContent: React.FC<ItineraryContentProps> = ({
       <div className="print-only-header">
         <div className="flex justify-center mb-4">
           <div className="w-48 h-12 relative">
-            <img src="/Logo_JST.svg" alt="Jogja Smart Tour Logo" className="w-full" />
+            <Image
+              src="/Logo_JST.svg"
+              alt="Jogja Smart Tour Logo"
+              fill
+              className="w-full"
+            />
           </div>
         </div>
-        <h2 className="text-center text-lg mb-2 text-gray-600">Jogja Smart Tour - Rencana Perjalanan</h2>
+        <h2 className="text-center text-lg mb-2 text-gray-600">
+          Jogja Smart Tour - Rencana Perjalanan
+        </h2>
         <Separator className="mb-4" />
       </div>
 
@@ -135,27 +151,31 @@ const ItineraryContent: React.FC<ItineraryContentProps> = ({
         {itinerary.title || `Trip #${itinerary.id}`}
       </h1>
 
-      {showMap && itinerary.itinerary_detail && itinerary.itinerary_detail.length > 0 && (
-        <div className="mb-8 no-print">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
-                <Map className="h-5 w-5" /> 
-                Peta Perjalanan
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ItineraryMap 
-                destinations={itinerary.itinerary_detail.map((detail: any) => ({
-                  ...detail.destinasi,
-                  urutan_hari: detail.urutan_hari
-                }))}
-              />
-              <MapLegend days={days} />
-            </CardContent>
-          </Card>
-        </div>
-      )}
+      {showMap &&
+        itinerary.itinerary_detail &&
+        itinerary.itinerary_detail.length > 0 && (
+          <div className="mb-8 no-print">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Map className="h-5 w-5" />
+                  Peta Perjalanan
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ItineraryMap
+                  destinations={itinerary.itinerary_detail.map(
+                    (detail: ItineraryDetailItem): DestinationWithDay => ({
+                      ...detail.destinasi,
+                      urutan_hari: detail.urutan_hari,
+                    })
+                  )}
+                />
+                <MapLegend days={days} />
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
@@ -245,54 +265,54 @@ const ItineraryContent: React.FC<ItineraryContentProps> = ({
           </CardContent>
         </Card>
       </div>
-      
+
       <h2 className="text-2xl font-bold mb-4">Rencana Perjalanan</h2>
       {groupedByDay && Object.keys(groupedByDay).length > 0 ? (
-        (Object.entries(groupedByDay) as [string, any[]][])
-            .sort(([dayA], [dayB]) => parseInt(dayA) - parseInt(dayB))
-            .map(([day, details]) => (
-          <Card key={day} className="mb-6 page-break-inside-avoid">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center">
-                <div 
-                  className="w-8 h-8 rounded-full mr-3 flex items-center justify-center text-white" 
-                  style={{ backgroundColor: getDayColor(parseInt(day)) }}
-                >
-                  {day}
-                </div>
-                Hari {day}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {details.map((detail: any, idx: number) => (
+        (Object.entries(groupedByDay) as [string, ItineraryDetailItem[]][])
+          .sort(([dayA], [dayB]) => parseInt(dayA) - parseInt(dayB))
+          .map(([day, details]) => (
+            <Card key={day} className="mb-6 page-break-inside-avoid">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center">
                   <div
-                    key={idx}
-                    className="border-l-2 border-primary pl-4 ml-2 py-2"
+                    className="w-8 h-8 rounded-full mr-3 flex items-center justify-center text-white"
+                    style={{ backgroundColor: getDayColor(parseInt(day)) }}
                   >
-                    <h3 className="font-medium text-lg">
-                      {detail.destinasi.nama_destinasi}
-                    </h3>
-                    <div className="flex items-center text-sm text-muted-foreground mt-1">
-                      <MapPin className="h-4 w-4 mr-1" />
-                      <span>{detail.destinasi.lokasi}</span>
-                    </div>
-                    <div className="flex items-center text-sm text-muted-foreground mt-1">
-                      <DollarSign className="h-4 w-4 mr-1" />
-                      <span>
-                        Tiket masuk:{" "}
-                        {formatRupiah(detail.destinasi.harga_tiket)}
-                      </span>
-                    </div>
-                    <Badge variant="outline" className="mt-2">
-                      {detail.destinasi.kategori}
-                    </Badge>
+                    {day}
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ))
+                  Hari {day}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {details.map((detail: ItineraryDetailItem, idx: number) => (
+                    <div
+                      key={idx}
+                      className="border-l-2 border-primary pl-4 ml-2 py-2"
+                    >
+                      <h3 className="font-medium text-lg">
+                        {detail.destinasi.nama_destinasi}
+                      </h3>
+                      <div className="flex items-center text-sm text-muted-foreground mt-1">
+                        <MapPin className="h-4 w-4 mr-1" />
+                        <span>{detail.destinasi.lokasi}</span>
+                      </div>
+                      <div className="flex items-center text-sm text-muted-foreground mt-1">
+                        <DollarSign className="h-4 w-4 mr-1" />
+                        <span>
+                          Tiket masuk:{" "}
+                          {formatRupiah(detail.destinasi.harga_tiket)}
+                        </span>
+                      </div>
+                      <Badge variant="outline" className="mt-2">
+                        {detail.destinasi.kategori}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))
       ) : (
         <Alert>
           <AlertCircle className="h-4 w-4" />
@@ -306,7 +326,8 @@ const ItineraryContent: React.FC<ItineraryContentProps> = ({
       <div className="print-only-footer">
         <Separator className="mb-4" />
         <p className="text-center text-sm text-gray-500">
-          Dicetak melalui Jogja Smart Tour pada {new Date().toLocaleDateString('id-ID')}
+          Dicetak melalui Jogja Smart Tour pada{" "}
+          {new Date().toLocaleDateString("id-ID")}
         </p>
       </div>
     </div>

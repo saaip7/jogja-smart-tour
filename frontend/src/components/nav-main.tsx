@@ -19,28 +19,23 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 
+interface NavItem {
+  title: string;
+  url: string;
+  icon?: LucideIcon;
+  konten?: string;
+  isActive?: boolean;
+  items?: NavItem[];
+}
+
 export function NavMain({
   items,
   onSelect,
 }: {
-  items: {
-    title: string;
-    url: string;
-    icon?: LucideIcon;
-    konten?: string;
-    isActive?: boolean;
-  }[];
+  items: NavItem[];
   onSelect: (konten: string) => void;
 }) {
   const [activeItem, setActiveItem] = useState(items[0].title);
-
-  interface NavItem {
-    title: string;
-    url: string;
-    icon?: LucideIcon;
-    konten?: string;
-    isActive?: boolean;
-  }
 
   const handleItemClick = (item: NavItem) => {
     if (item.konten) {

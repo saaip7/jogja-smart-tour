@@ -17,7 +17,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import CreateItinerary from "@/components/CreateItinerary";
-import ItineraryList from "@/components/ItineraryList";
 
 export default function Page() {
   // Check if data is an array and has elements before accessing

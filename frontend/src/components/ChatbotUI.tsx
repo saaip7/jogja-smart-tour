@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { Message } from "../app/utils/attractions.utils";
 
@@ -29,15 +29,19 @@ export const ChatbotUI: React.FC<ChatbotUIProps> = ({
   return (
     <div className="fixed bottom-8 right-8 z-50">
       {isOpen && (
-        <div 
+        <div
           ref={chatboxRef}
           className="absolute bottom-20 right-0 w-96 sm:w-[450px] h-[550px] bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all duration-500 ease-in-out transform origin-bottom-right"
-          style={{ animation: "scale-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)" }}
+          style={{
+            animation: "scale-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+          }}
         >
           <div className="bg-[#0072BB] text-white p-5">
             <h3 className="text-xl font-semibold">Jogja Smart Assistant</h3>
             {isLoading && (
-              <p className="text-xs text-blue-100 mt-1">Loading attraction data...</p>
+              <p className="text-xs text-blue-100 mt-1">
+                Loading attraction data...
+              </p>
             )}
           </div>
           <div className="flex-1 p-6 overflow-y-auto">
@@ -60,19 +64,36 @@ export const ChatbotUI: React.FC<ChatbotUIProps> = ({
                       : "bg-gray-100 text-gray-800 rounded-tl-none"
                   }`}
                   style={{
-                    boxShadow: msg.sender === "user" ? "0 4px 6px rgba(0, 114, 187, 0.1)" : "0 4px 6px rgba(0, 0, 0, 0.05)",
-                    animation: msg.sender === "user" ? "slide-left 0.3s ease-out" : "slide-right 0.3s ease-out"
+                    boxShadow:
+                      msg.sender === "user"
+                        ? "0 4px 6px rgba(0, 114, 187, 0.1)"
+                        : "0 4px 6px rgba(0, 0, 0, 0.05)",
+                    animation:
+                      msg.sender === "user"
+                        ? "slide-left 0.3s ease-out"
+                        : "slide-right 0.3s ease-out",
                   }}
                 >
                   {msg.isTyping ? (
                     <div className="flex space-x-2 items-center justify-center h-6">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                      <div
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "0ms" }}
+                      ></div>
+                      <div
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "150ms" }}
+                      ></div>
+                      <div
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "300ms" }}
+                      ></div>
                     </div>
                   ) : (
                     msg.message.split("\n").map((line, i) => (
-                      <div key={i} className="leading-relaxed">{line}</div>
+                      <div key={i} className="leading-relaxed">
+                        {line}
+                      </div>
                     ))
                   )}
                 </div>
@@ -98,8 +119,19 @@ export const ChatbotUI: React.FC<ChatbotUIProps> = ({
               onClick={handleSendMessage}
               className="ml-3 bg-[#0072BB] text-white p-3 rounded-full hover:bg-blue-700 transition-colors duration-300 flex items-center justify-center"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
               </svg>
             </button>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import ItineraryCard from "@/components/ItineraryCard";
 import CreateItinerary from "@/components/CreateItinerary";
@@ -29,11 +29,7 @@ export default function ItineraryList() {
   const router = useRouter();
   const { toast } = useToast();
 
-  useEffect(() => {
-    fetchItineraries();
-  }, []);
-
-  const fetchItineraries = async () => {
+  const fetchItineraries = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -79,7 +75,11 @@ export default function ItineraryList() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchItineraries();
+  }, [fetchItineraries]);
 
   const handleCreateSuccess = (itineraryId: number) => {
     toast({

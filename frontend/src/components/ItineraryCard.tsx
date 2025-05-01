@@ -18,7 +18,7 @@ interface ItineraryCardProps {
   totalCost: number;
   date: string;
   duration: number;
-  tripTypes: string[];
+  tripTypes: string[] | string;
 }
 
 const ItineraryCard: React.FC<ItineraryCardProps> = ({
@@ -62,13 +62,13 @@ const ItineraryCard: React.FC<ItineraryCardProps> = ({
 
             <div className="flex flex-wrap gap-1 mt-3">
               {Array.isArray(tripTypes)
-                ? tripTypes.map((type, index) => (
+                ? tripTypes.map((type: string, index: number) => (
                     <Badge key={index} variant="outline" className="text-xs">
                       {type.trim()}
                     </Badge>
                   ))
                 : typeof tripTypes === "string" &&
-                  tripTypes.split(",").map((type, index) => (
+                  tripTypes.split(",").map((type: string, index: number) => (
                     <Badge key={index} variant="outline" className="text-xs">
                       {type.trim()}
                     </Badge>

@@ -9,7 +9,8 @@ import { ChatbotUI } from "./ChatbotUI";
 const initialMessages = [
   {
     sender: "bot" as const,
-    message: "Halo! 👋 Selamat datang di Jogja Smart Tour Assistant. Saya dapat membantu Anda menemukan tempat wisata di Jogja. Apa yang ingin Anda ketahui?",
+    message:
+      "Halo! 👋 Selamat datang di Jogja Smart Tour Assistant. Saya dapat membantu Anda menemukan tempat wisata di Jogja. Apa yang ingin Anda ketahui?",
   },
 ];
 
@@ -21,6 +22,7 @@ export default function DataDrivenChatbot() {
   const [isLoading, setIsLoading] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatboxRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,7 +44,10 @@ export default function DataDrivenChatbot() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (chatboxRef.current && !chatboxRef.current.contains(event.target as Node)) {
+      if (
+        chatboxRef.current &&
+        !chatboxRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -77,15 +82,17 @@ export default function DataDrivenChatbot() {
         isTyping: true,
       },
     ]);
-    
+
     setTimeout(() => {
       const response = processQuery(inputMessage, attractions, isLoading);
 
-      setMessages((prev) => 
-        prev.filter(msg => !msg.isTyping).concat({
-          sender: "bot",
-          message: response,
-        })
+      setMessages((prev) =>
+        prev
+          .filter((msg) => !msg.isTyping)
+          .concat({
+            sender: "bot",
+            message: response,
+          })
       );
     }, 1000);
   };
@@ -99,8 +106,8 @@ export default function DataDrivenChatbot() {
       setInputMessage={setInputMessage}
       handleSendMessage={handleSendMessage}
       toggleChatbox={toggleChatbox}
-      chatboxRef={chatboxRef}
-      messagesEndRef={messagesEndRef}
+      chatboxRef={chatboxRef as React.RefObject<HTMLDivElement>}
+      messagesEndRef={messagesEndRef as React.RefObject<HTMLDivElement>}
     />
   );
 }

@@ -13,7 +13,10 @@ import {
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ItineraryService } from "@/app/services/itinerary.service";
+import {
+  ItineraryService,
+  ItineraryFormData,
+} from "@/app/services/itinerary.service";
 import { useToast } from "../hooks/use-toast";
 
 type TripType = "Alam" | "Budaya" | "Kuliner" | "Pantai" | "Gunung" | "Belanja";
@@ -104,7 +107,7 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
     }
 
     setIsLoading(true);
-    
+
     try {
       toast({
         title: "Sedang Memproses",
@@ -112,18 +115,18 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
         variant: "default",
       });
 
-      const itineraryData = {
+      const itineraryData: ItineraryFormData = {
         title,
         preferences,
         budget,
-        date,
+        date: date as Date, // date is already checked for null above
         tripTypes: selectedTypes,
         duration,
       };
 
       // Call AI service to generate itinerary
       const response = await ItineraryService.createItineraryWithAI(
-        itineraryData as any // Type assertion as a workaround
+        itineraryData
       );
 
       toast({
@@ -141,7 +144,8 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
       console.error("Error creating itinerary:", error);
       toast({
         title: "Gagal",
-        description: "Terjadi kesalahan saat membuat rencana perjalanan. Silakan coba lagi.",
+        description:
+          "Terjadi kesalahan saat membuat rencana perjalanan. Silakan coba lagi.",
         variant: "destructive",
       });
     } finally {

@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Toast, ToastClose, ToastDescription, ToastTitle } from "@/components/ui/toast";
+import {
+  Toast,
+  ToastClose,
+  ToastDescription,
+  ToastTitle,
+} from "@/components/ui/toast";
 
 export type ToastProps = {
   id: string;
@@ -12,27 +17,36 @@ export type ToastProps = {
   duration?: number;
 };
 
-const TOAST_REMOVE_DELAY = 1000;
 export const Toaster = () => {
   const [toasts, setToasts] = useState<ToastProps[]>([]);
 
   useEffect(() => {
     const handleToast = (event: CustomEvent<ToastProps>) => {
-      const { id, title, description, variant, action, duration = 5000 } = event.detail;
-      
+      const {
+        id,
+        title,
+        description,
+        variant,
+        action,
+        duration = 5000,
+      } = event.detail;
+
       setToasts((prevToasts) => [
         ...prevToasts,
         { id, title, description, variant, action, duration },
       ]);
-      
+
       setTimeout(() => {
-        setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+        setToasts((prevToasts) =>
+          prevToasts.filter((toast) => toast.id !== id)
+        );
       }, duration);
     };
 
     document.addEventListener("toast", handleToast as EventListener);
 
-    return () => document.removeEventListener("toast", handleToast as EventListener);
+    return () =>
+      document.removeEventListener("toast", handleToast as EventListener);
   }, []);
 
   const handleClose = (id: string) => {
