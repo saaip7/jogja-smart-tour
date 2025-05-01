@@ -1,7 +1,7 @@
 "use client";
 
 import { DestinasiCard } from "./destinasi-card";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { destinations, categories } from "@/data/destinations";
 
 const topDestinations = [
@@ -46,10 +46,12 @@ export const BerandaDestinasi = () => {
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
-  
+
   // Filter destinations based on active category
   const filteredDestinations =
-    activeCategory === "Semua" ? destinations : destinations.filter((dest) => dest.category === activeCategory);
+    activeCategory === "Semua"
+      ? destinations
+      : destinations.filter((dest) => dest.category === activeCategory);
 
   // Handle carousel navigation
   const goToSlide = (index: number) => {
@@ -57,33 +59,39 @@ export const BerandaDestinasi = () => {
     if (carouselRef.current) {
       carouselRef.current.scrollTo({
         left: index * carouselRef.current.offsetWidth,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
 
   // Handle scroll event to update the current slide indicator
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (carouselRef.current) {
       const scrollPosition = carouselRef.current.scrollLeft;
       const slideWidth = carouselRef.current.offsetWidth;
       const newSlideIndex = Math.round(scrollPosition / slideWidth);
-      if (newSlideIndex !== currentSlide) {
-        setCurrentSlide(newSlideIndex);
-      }
+      setCurrentSlide((prevSlide) => {
+        if (newSlideIndex !== prevSlide) {
+          return newSlideIndex;
+        }
+        return prevSlide;
+      });
     }
-  };
+  }, []);
 
   useEffect(() => {
     const carousel = carouselRef.current;
     if (carousel) {
-      carousel.addEventListener('scroll', handleScroll);
-      return () => carousel.removeEventListener('scroll', handleScroll);
+      carousel.addEventListener("scroll", handleScroll);
+      return () => carousel.removeEventListener("scroll", handleScroll);
     }
-  }, [currentSlide]);
+  }, [handleScroll]);
 
   return (
-    <section id="rekomendasi" className="py-12 px-10 md:px-16 lg:px-24 mx-auto my-12">
+    <section
+      id="rekomendasi"
+      className="py-12 px-10 md:px-16 lg:px-24 mx-auto my-12"
+    >
       <h2 className="text-2xl md:text-4xl font-semibold text-center mb-6 md:mb-10 text-neutral-900">
         Top Destinasi Wisata di Yogyakarta
       </h2>
@@ -93,7 +101,6 @@ export const BerandaDestinasi = () => {
         {topDestinations.map((destination) => (
           <DestinasiCard
             key={destination.id}
-            id={destination.id}
             name={destination.name}
             description={destination.description}
             imageUrl={destination.imageUrl}
@@ -104,15 +111,14 @@ export const BerandaDestinasi = () => {
 
       {/* Mobile view - carousel */}
       <div className="md:hidden">
-        <div 
+        <div
           ref={carouselRef}
           className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {topDestinations.map((destination) => (
             <div key={destination.id} className="min-w-full snap-center px-2">
               <DestinasiCard
-                id={destination.id}
                 name={destination.name}
                 description={destination.description}
                 imageUrl={destination.imageUrl}
@@ -121,7 +127,7 @@ export const BerandaDestinasi = () => {
             </div>
           ))}
         </div>
-        
+
         {/* Carousel indicators */}
         <div className="flex justify-center space-x-2 mt-6">
           {topDestinations.map((_, index) => (
@@ -148,7 +154,7 @@ export const BerandaDestinasi = () => {
             menggugah selera.
           </p>
         </div>
-        
+
         {/* Category filters - made scrollable on mobile */}
         <div className="flex flex-wrap justify-center gap-2 mb-8">
           {categories.map((category) => (
@@ -165,13 +171,12 @@ export const BerandaDestinasi = () => {
             </button>
           ))}
         </div>
-        
+
         {/* Destinations grid - responsive columns */}
         <div className="grid grid-cols-1 sm2:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
           {filteredDestinations.map((destination) => (
             <DestinasiCard
               key={destination.id}
-              id={destination.id}
               name={destination.name}
               description={destination.description}
               imageUrl={destination.imageUrl}

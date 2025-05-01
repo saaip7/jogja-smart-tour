@@ -1,5 +1,3 @@
-import Select from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 
 interface DestinationSortProps {

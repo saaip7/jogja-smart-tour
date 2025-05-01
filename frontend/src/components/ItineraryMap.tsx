@@ -1,56 +1,59 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline, ZoomControl, useMap, LayersControl } from "react-leaflet";
+import React, { useEffect, useState } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+  ZoomControl,
+  useMap,
+  LayersControl,
+} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
-import { getLocationsData, geocodeLocation } from "@/app/services/location-data.service";
+import { geocodeLocation } from "@/app/services/location-data.service";
 import "@/styles/map-styles.css";
+import { DestinationWithDay } from "@/types/itinerary";
 
 const mapStyles = {
   standard: {
-    name: 'Standard',
-    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    name: "Standard",
+    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
   topographic: {
-    name: 'Topographic',
-    url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-    attribution: '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> contributors'
+    name: "Topographic",
+    url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+    attribution:
+      '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> contributors',
   },
   humanitarian: {
-    name: 'Humanitarian',
-    url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://www.hotosm.org/">HOT</a>'
+    name: "Humanitarian",
+    url: "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://www.hotosm.org/">HOT</a>',
   },
   cycleMap: {
-    name: 'Cycle Map',
-    url: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://www.cyclosm.org/">CyclOSM</a>'
+    name: "Cycle Map",
+    url: "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://www.cyclosm.org/">CyclOSM</a>',
   },
   watercolor: {
-    name: 'Watercolor',
-    url: 'https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg',
-    attribution: '&copy; <a href="https://stamen.com">Stamen Design</a> contributors'
-  }
+    name: "Watercolor",
+    url: "https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg",
+    attribution:
+      '&copy; <a href="https://stamen.com">Stamen Design</a> contributors',
+  },
 };
 
-interface Destination {
-  id: number;
-  nama_destinasi: string;
-  lokasi: string;
-  kategori: string;
-  harga_tiket: number;
-  rating: number;
-  latitude?: number;
-  longitude?: number;
-  urutan_hari: number;
-}
-
 interface EnhancedItineraryMapProps {
-  destinations: Destination[];
+  destinations: DestinationWithDay[];
 }
 
 const getDayColor = (day: number): string => {
@@ -66,22 +69,26 @@ const getDayColor = (day: number): string => {
   return colors[day % colors.length];
 };
 
-const MapBoundsFitter = ({ destinations }: { destinations: Destination[] }) => {
+const MapBoundsFitter = ({
+  destinations,
+}: {
+  destinations: DestinationWithDay[];
+}) => {
   const map = useMap();
-  
+
   useEffect(() => {
     if (destinations.length > 0) {
       const points = destinations
-        .filter(d => d.latitude && d.longitude)
-        .map(d => [d.latitude || 0, d.longitude || 0]);
-      
+        .filter((d) => d.latitude && d.longitude)
+        .map((d) => [d.latitude || 0, d.longitude || 0]);
+
       if (points.length > 0) {
         const bounds = L.latLngBounds(points as [number, number][]);
         map.fitBounds(bounds, { padding: [50, 50] });
       }
     }
   }, [destinations, map]);
-  
+
   return null;
 };
 
@@ -94,70 +101,78 @@ const MapLoading = () => (
   </div>
 );
 
-const EnhancedItineraryMap: React.FC<EnhancedItineraryMapProps> = ({ destinations }) => {
+const EnhancedItineraryMap: React.FC<EnhancedItineraryMapProps> = ({
+  destinations,
+}) => {
   const [ready, setReady] = useState(false);
-  const [processedDestinations, setProcessedDestinations] = useState<Destination[]>([]);
-  const [dayGroups, setDayGroups] = useState<{ [key: number]: Destination[] }>({});
+  const [processedDestinations, setProcessedDestinations] = useState<
+    DestinationWithDay[]
+  >([]);
+  const [dayGroups, setDayGroups] = useState<{
+    [key: number]: DestinationWithDay[];
+  }>({});
   const [activeDay, setActiveDay] = useState<number | null>(null);
   const [mapKey, setMapKey] = useState(Date.now());
 
   useEffect(() => {
     const processDestinations = async () => {
       const destCopy = [...destinations];
-      
+
       for (let i = 0; i < destCopy.length; i++) {
         if (!destCopy[i].latitude || !destCopy[i].longitude) {
-
           try {
             let coords = await geocodeLocation(destCopy[i].nama_destinasi);
-            
+
             if (!coords && destCopy[i].lokasi) {
               coords = await geocodeLocation(destCopy[i].lokasi);
             }
-            
+
             if (coords) {
               destCopy[i].latitude = coords[0];
               destCopy[i].longitude = coords[1];
             } else {
               const dayOffset = destCopy[i].urutan_hari * 0.01;
               const randomOffset = () => (Math.random() - 0.5) * 0.03;
-              
-              destCopy[i].latitude = -7.7956 + randomOffset() + dayOffset; 
+
+              destCopy[i].latitude = -7.7956 + randomOffset() + dayOffset;
               destCopy[i].longitude = 110.3695 + randomOffset();
             }
           } catch (error) {
-            console.error(`Error getting coordinates for ${destCopy[i].nama_destinasi}:`, error);
-            
+            console.error(
+              `Error getting coordinates for ${destCopy[i].nama_destinasi}:`,
+              error
+            );
+
             const dayOffset = destCopy[i].urutan_hari * 0.01;
             const randomOffset = () => (Math.random() - 0.5) * 0.03;
-            
+
             destCopy[i].latitude = -7.7956 + randomOffset() + dayOffset;
             destCopy[i].longitude = 110.3695 + randomOffset();
           }
         }
       }
-      
+
       setProcessedDestinations(destCopy);
-      
-      const groups: { [key: number]: Destination[] } = {};
-      destCopy.forEach(dest => {
+
+      const groups: { [key: number]: DestinationWithDay[] } = {};
+      destCopy.forEach((dest) => {
         if (!groups[dest.urutan_hari]) {
           groups[dest.urutan_hari] = [];
         }
         groups[dest.urutan_hari].push(dest);
       });
-      
-      Object.keys(groups).forEach(day => {
+
+      Object.keys(groups).forEach((day) => {
         const dayNum = parseInt(day);
         groups[dayNum] = groups[dayNum].sort((a, b) => a.id - b.id);
       });
-      
+
       setDayGroups(groups);
-      
+
       if (Object.keys(groups).length > 0) {
         setActiveDay(parseInt(Object.keys(groups)[0]));
       }
-      
+
       setReady(true);
     };
 
@@ -169,9 +184,9 @@ const EnhancedItineraryMap: React.FC<EnhancedItineraryMapProps> = ({ destination
       setMapKey(Date.now());
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -179,16 +194,16 @@ const EnhancedItineraryMap: React.FC<EnhancedItineraryMapProps> = ({ destination
     return <MapLoading />;
   }
 
-  const allLats = processedDestinations.map(d => d.latitude || 0);
-  const allLngs = processedDestinations.map(d => d.longitude || 0);
+  const allLats = processedDestinations.map((d) => d.latitude || 0);
+  const allLngs = processedDestinations.map((d) => d.longitude || 0);
   const centerLat = allLats.reduce((sum, lat) => sum + lat, 0) / allLats.length;
   const centerLng = allLngs.reduce((sum, lng) => sum + lng, 0) / allLngs.length;
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2 mb-4">
-        <button 
-          onClick={() => setActiveDay(null)} 
+        <button
+          onClick={() => setActiveDay(null)}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             activeDay === null
               ? "bg-gray-800 text-white"
@@ -197,8 +212,8 @@ const EnhancedItineraryMap: React.FC<EnhancedItineraryMapProps> = ({ destination
         >
           All Days
         </button>
-        
-        {Object.keys(dayGroups).map(day => {
+
+        {Object.keys(dayGroups).map((day) => {
           const dayNum = parseInt(day);
           return (
             <button
@@ -206,8 +221,9 @@ const EnhancedItineraryMap: React.FC<EnhancedItineraryMapProps> = ({ destination
               onClick={() => setActiveDay(dayNum)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors`}
               style={{
-                backgroundColor: activeDay === dayNum ? getDayColor(dayNum) : "#f3f4f6",
-                color: activeDay === dayNum ? "white" : "#374151"
+                backgroundColor:
+                  activeDay === dayNum ? getDayColor(dayNum) : "#f3f4f6",
+                color: activeDay === dayNum ? "white" : "#374151",
               }}
             >
               Day {day}
@@ -215,12 +231,15 @@ const EnhancedItineraryMap: React.FC<EnhancedItineraryMapProps> = ({ destination
           );
         })}
       </div>
-      
-      <div className="relative z-0 h-[500px] w-full rounded-lg overflow-hidden shadow-md" key={mapKey}>
-        <MapContainer 
-          center={[centerLat, centerLng]} 
-          zoom={12} 
-          style={{ height: '100%', width: '100%' }}
+
+      <div
+        className="relative z-0 h-[500px] w-full rounded-lg overflow-hidden shadow-md"
+        key={mapKey}
+      >
+        <MapContainer
+          center={[centerLat, centerLng]}
+          zoom={12}
+          style={{ height: "100%", width: "100%" }}
           scrollWheelZoom={true}
           zoomControl={false}
         >
@@ -228,33 +247,37 @@ const EnhancedItineraryMap: React.FC<EnhancedItineraryMapProps> = ({ destination
             {Object.entries(mapStyles).map(([key, style]) => (
               <LayersControl.BaseLayer
                 key={key}
-                checked={key === 'standard'}
+                checked={key === "standard"}
                 name={style.name}
               >
-                <TileLayer
-                  attribution={style.attribution}
-                  url={style.url}
-                />
+                <TileLayer attribution={style.attribution} url={style.url} />
               </LayersControl.BaseLayer>
             ))}
           </LayersControl>
-          
+
           <ZoomControl position="bottomleft" />
           <MapBoundsFitter destinations={processedDestinations} />
-          
+
           {processedDestinations
-            .filter(dest => activeDay === null || dest.urutan_hari === activeDay)
+            .filter(
+              (dest) => activeDay === null || dest.urutan_hari === activeDay
+            )
             .map((destination) => (
-              <Marker 
+              <Marker
                 key={destination.id}
-                position={[destination.latitude || 0, destination.longitude || 0]}
+                position={[
+                  destination.latitude || 0,
+                  destination.longitude || 0,
+                ]}
                 icon={L.divIcon({
-                  className: 'custom-div-icon',
+                  className: "custom-div-icon",
                   html: `
                     <div 
                       class="map-marker" 
                       style="
-                        background-color: ${getDayColor(destination.urutan_hari)}; 
+                        background-color: ${getDayColor(
+                          destination.urutan_hari
+                        )}; 
                         width: 2.5rem; 
                         height: 2.5rem;
                         display: flex;
@@ -266,7 +289,7 @@ const EnhancedItineraryMap: React.FC<EnhancedItineraryMapProps> = ({ destination
                     </div>
                   `,
                   iconSize: [40, 40],
-                  iconAnchor: [20, 20]
+                  iconAnchor: [20, 20],
                 })}
               >
                 <Popup>
@@ -274,42 +297,60 @@ const EnhancedItineraryMap: React.FC<EnhancedItineraryMapProps> = ({ destination
                     Day {destination.urutan_hari}
                   </div>
                   <div className="popup-content">
-                    <h3 className="font-bold text-base mb-1">{destination.nama_destinasi}</h3>
+                    <h3 className="font-bold text-base mb-1">
+                      {destination.nama_destinasi}
+                    </h3>
                     <div className="text-sm space-y-1">
-                      <p><strong>Location:</strong> {destination.lokasi}</p>
-                      <p><strong>Category:</strong> {destination.kategori}</p>
-                      <p><strong>Entrance Fee:</strong> Rp{destination.harga_tiket.toLocaleString()}</p>
-                      <p><strong>Rating:</strong> {destination.rating}/5</p>
+                      <p>
+                        <strong>Location:</strong> {destination.lokasi}
+                      </p>
+                      <p>
+                        <strong>Category:</strong> {destination.kategori}
+                      </p>
+                      <p>
+                        <strong>Entrance Fee:</strong> Rp
+                        {destination.harga_tiket.toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Rating:</strong> {destination.rating}/5
+                      </p>
                     </div>
                   </div>
                 </Popup>
               </Marker>
-          ))}
+            ))}
 
           {Object.entries(dayGroups)
-            .filter(([day]) => activeDay === null || parseInt(day) === activeDay)
+            .filter(
+              ([day]) => activeDay === null || parseInt(day) === activeDay
+            )
             .map(([day, destinations]) => {
-              const sortedDestinations = [...destinations].sort((a, b) => a.id - b.id);
-              const points = sortedDestinations.map(d => [d.latitude || 0, d.longitude || 0]);
-              
+              const sortedDestinations = [...destinations].sort(
+                (a, b) => a.id - b.id
+              );
+              const points = sortedDestinations.map((d) => [
+                d.latitude || 0,
+                d.longitude || 0,
+              ]);
+
               return (
-                <Polyline 
+                <Polyline
                   key={`day-${day}`}
-                  positions={points as [number, number][]} 
-                  pathOptions={{ 
+                  positions={points as [number, number][]}
+                  pathOptions={{
                     color: getDayColor(parseInt(day)),
                     weight: 4,
                     opacity: 0.8,
-                    dashArray: '10, 10',
-                    lineCap: 'round',
-                    className: 'route-path'
-                  }} 
+                    dashArray: "10, 10",
+                    lineCap: "round",
+                    className: "route-path",
+                  }}
                 />
               );
-          })}
+            })}
         </MapContainer>
       </div>
-      
+
       <div className="text-sm text-gray-500 italic">
         <p>• Klik tombol hari di atas untuk memfilter tampilan peta</p>
         <p>• Klik pada penanda untuk melihat detail destinasi</p>
