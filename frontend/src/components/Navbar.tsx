@@ -17,7 +17,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { UserIcon } from "lucide-react";
 
 export default function Navbar() {
   const { user, logout, login } = useAuth();
@@ -230,7 +229,7 @@ export default function Navbar() {
                     Itinerary
                   </Link>
                 )}
-                
+
                 <div className="px-4 pt-2 mt-1 border-t border-gray-200">
                   {user ? (
                     <div className="flex flex-col gap-3 py-2">
@@ -289,8 +288,10 @@ export default function Navbar() {
                             </AlertDialogTitle>
                             <AlertDialogDescription className="pb-4 text-center">
                               Rasakan kemudahan{" "}
-                              <span className="font-bold">Jogja Smart Tour</span> untuk
-                              perjalananmu
+                              <span className="font-bold">
+                                Jogja Smart Tour
+                              </span>{" "}
+                              untuk perjalananmu
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
