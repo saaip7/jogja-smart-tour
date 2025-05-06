@@ -13,10 +13,7 @@ import {
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  ItineraryService,
-  ItineraryFormData,
-} from "@/app/services/itinerary.service";
+import { ItineraryService } from "@/app/services/itinerary.service";
 import { useToast } from "../hooks/use-toast";
 
 type TripType = "Alam" | "Budaya" | "Kuliner" | "Pantai" | "Gunung" | "Belanja";
@@ -64,22 +61,24 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
   const handleSubmit = async () => {
     // Clear previous errors
     setErrors({});
-    
+
     // Validate fields
     const newErrors: Record<string, string> = {};
-    
+
     if (!title.trim()) {
       newErrors.title = "Judul rencana tidak boleh kosong";
     }
-    
+
     if (!preferences.trim()) {
       newErrors.preferences = "Harap isi preferensi wisata Anda";
     } else if (preferences.trim().length < 10) {
-      newErrors.preferences = "Preferensi terlalu singkat. Jelaskan lebih detail tempat atau aktivitas yang Anda inginkan";
+      newErrors.preferences =
+        "Preferensi terlalu singkat. Jelaskan lebih detail tempat atau aktivitas yang Anda inginkan";
     } else if (preferences.trim().split(/\s+/).length < 5) {
-      newErrors.preferences = "Berikan minimal 5 kata untuk preferensi Anda. Contoh: 'Saya ingin mengunjungi pantai dan candi'";
+      newErrors.preferences =
+        "Berikan minimal 5 kata untuk preferensi Anda. Contoh: 'Saya ingin mengunjungi pantai dan candi'";
     }
-    
+
     const budgetValue = Number(budget);
     if (!budget || isNaN(budgetValue)) {
       newErrors.budget = "Harap isi budget perjalanan dengan nilai numerik";
@@ -88,21 +87,21 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
     } else if (budgetValue > 100000000) {
       newErrors.budget = "Budget maksimum adalah Rp 100.000.000";
     }
-    
+
     if (!date) {
       newErrors.date = "Harap pilih tanggal perjalanan";
     } else if (date < new Date()) {
       newErrors.date = "Tanggal perjalanan tidak boleh di masa lalu";
     }
-    
+
     if (selectedTypes.length === 0) {
       newErrors.tripTypes = "Harap pilih minimal satu jenis wisata";
     }
-    
+
     if (duration <= 0 || duration > 14) {
       newErrors.duration = "Durasi harus antara 1-14 hari";
     }
-    
+
     // If there are errors, show them and stop submission
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -110,7 +109,7 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
     }
 
     setIsLoading(true);
-   
+
     try {
       toast({
         title: "Sedang Memproses",
@@ -170,7 +169,9 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
               onChange={(e) => setTitle(e.target.value)}
               className={errors.title ? "border-red-500" : ""}
             />
-            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+            )}
           </div>
         </div>
 
@@ -188,9 +189,13 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
               placeholder="Apa tujuan wisata yang Anda ingin datangi? Berikan detail tentang aktivitas, tempat, atau pengalaman yang Anda harapkan."
               value={preferences}
               onChange={(e) => setPreferences(e.target.value)}
-              className={`min-h-24 ${errors.preferences ? "border-red-500" : ""}`}
+              className={`min-h-24 ${
+                errors.preferences ? "border-red-500" : ""
+              }`}
             />
-            {errors.preferences && <p className="text-red-500 text-sm mt-1">{errors.preferences}</p>}
+            {errors.preferences && (
+              <p className="text-red-500 text-sm mt-1">{errors.preferences}</p>
+            )}
           </div>
         </div>
 
@@ -216,7 +221,9 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
                 className={errors.budget ? "border-red-500" : ""}
               />
             </div>
-            {errors.budget && <p className="text-red-500 text-sm mt-1">{errors.budget}</p>}
+            {errors.budget && (
+              <p className="text-red-500 text-sm mt-1">{errors.budget}</p>
+            )}
           </div>
         </div>
 
@@ -245,7 +252,9 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
                 <Calendar mode="single" selected={date} onSelect={setDate} />
               </PopoverContent>
             </Popover>
-            {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date}</p>}
+            {errors.date && (
+              <p className="text-red-500 text-sm mt-1">{errors.date}</p>
+            )}
           </div>
         </div>
 
@@ -266,11 +275,15 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
                 type="number"
                 min="1"
                 max="14"
-                className={`w-20 mr-2 ${errors.duration ? "border-red-500" : ""}`}
+                className={`w-20 mr-2 ${
+                  errors.duration ? "border-red-500" : ""
+                }`}
               />
               <span>hari</span>
             </div>
-            {errors.duration && <p className="text-red-500 text-sm mt-1">{errors.duration}</p>}
+            {errors.duration && (
+              <p className="text-red-500 text-sm mt-1">{errors.duration}</p>
+            )}
           </div>
         </div>
 
@@ -285,7 +298,9 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
                 <Button
                   key={type}
                   type="button"
-                  variant={selectedTypes.includes(type) ? "selected" : "outline"}
+                  variant={
+                    selectedTypes.includes(type) ? "selected" : "outline"
+                  }
                   onClick={() => toggleTripType(type)}
                   className="flex-grow sm:flex-grow-0 rounded-3xl"
                 >
@@ -293,7 +308,9 @@ const CreateItinerary: React.FC<CreateItineraryProps> = ({
                 </Button>
               ))}
             </div>
-            {errors.tripTypes && <p className="text-red-500 text-sm mt-1">{errors.tripTypes}</p>}
+            {errors.tripTypes && (
+              <p className="text-red-500 text-sm mt-1">{errors.tripTypes}</p>
+            )}
           </div>
         </div>
 

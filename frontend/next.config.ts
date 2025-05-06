@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
       "img.freepik.com",
     ],
   },
+  // Enable standalone output mode for Docker
+  output: "standalone",
 };
 
 export default nextConfig;
