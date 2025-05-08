@@ -16,7 +16,6 @@ import {
   DollarSign,
   ArrowLeft,
   ChevronRight,
-  Star
 } from "lucide-react";
 import { StarRating } from "@/components/destinations/StarRating";
 import BackToTop from "@/components/destinations/BackToTop";
