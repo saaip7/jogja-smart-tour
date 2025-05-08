@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Message } from "../app/utils/attractions.utils";
 
@@ -26,12 +26,25 @@ export const ChatbotUI: React.FC<ChatbotUIProps> = ({
   chatboxRef,
   messagesEndRef,
 }) => {
+  // Animation control for the prompt text
+  const [showPromptAnimation, setShowPromptAnimation] = useState(false);
+  
+  useEffect(() => {
+    // Animate the prompt text every few seconds to draw attention
+    const interval = setInterval(() => {
+      setShowPromptAnimation(true);
+      setTimeout(() => setShowPromptAnimation(false), 1000);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="fixed bottom-8 right-8 z-50">
       {isOpen && (
         <div
           ref={chatboxRef}
-          className="absolute bottom-20 right-0 w-96 sm:w-[450px] h-[550px] bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all duration-500 ease-in-out transform origin-bottom-right"
+          className="absolute bottom-20 right-0 w-[400px] sm:w-[550px] h-[600px] bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col transition-all duration-500 ease-in-out transform origin-bottom-right"
           style={{
             animation: "scale-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
           }}
@@ -53,8 +66,8 @@ export const ChatbotUI: React.FC<ChatbotUIProps> = ({
                 }`}
               >
                 {msg.sender === "bot" && (
-                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2 flex-shrink-0">
-                    <span className="text-[#0072BB] font-bold">J</span>
+                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-2 flex-shrink-0 border-2 border-[#0072BB]">
+                    <span className="text-[#0072BB] font-bold text-lg">J</span>
                   </div>
                 )}
                 <div
@@ -91,65 +104,71 @@ export const ChatbotUI: React.FC<ChatbotUIProps> = ({
                     </div>
                   ) : (
                     msg.message.split("\n").map((line, i) => (
-                      <div key={i} className="leading-relaxed">
+                      <div key={i} className="leading-relaxed text-[15px]">
                         {line}
                       </div>
                     ))
                   )}
                 </div>
                 {msg.sender === "user" && (
-                  <div className="w-8 h-8 rounded-full bg-[#0072BB] flex items-center justify-center ml-2 flex-shrink-0">
-                    <span className="text-white font-bold">U</span>
+                  <div className="w-10 h-10 rounded-full bg-[#0072BB] flex items-center justify-center ml-2 flex-shrink-0 border-2 border-blue-300">
+                    <span className="text-white font-bold text-lg">U</span>
                   </div>
                 )}
               </div>
             ))}
             <div ref={messagesEndRef} />
           </div>
-          <div className="border-t p-4 flex items-center bg-gray-50">
+            <div className="border-t p-4 flex items-center bg-gray-50">
             <input
               type="text"
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
               placeholder="Tanyakan tentang wisata di Jogja..."
-              className="flex-1 px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0072BB] focus:border-transparent"
+              className="flex-1 px-5 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0072BB] focus:border-transparent text-[15px]"
             />
             <button
               onClick={handleSendMessage}
-              className="ml-3 bg-[#0072BB] text-white p-3 rounded-full hover:bg-blue-700 transition-colors duration-300 flex items-center justify-center"
+              className="ml-3 bg-[#0072BB] text-white p-5 rounded-full hover:bg-blue-700 transition-colors duration-300 flex items-center justify-center shadow-md"
             >
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-8 w-8"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
               </svg>
             </button>
+            </div>
           </div>
-        </div>
-      )}
-      <button
-        onClick={toggleChatbox}
-        className="bg-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:shadow-xl transition-all duration-300 transform hover:scale-110"
-        style={{ borderRadius: "24px" }}
-      >
-        <Image
-          src="/chat.png"
-          alt="Chat"
-          width={36}
-          height={36}
-          className="transition-transform duration-300"
-        />
-      </button>
+          )}
+          <div 
+          className={`flex items-center space-x-3 cursor-pointer bg-[#0072BB] rounded-full pl-6 pr-3 py-3 shadow-lg hover:shadow-xl transition-all duration-300 ${showPromptAnimation ? 'pulse-animation' : ''}`} 
+          onClick={toggleChatbox}
+          >
+          <div className="text-white text-sm font-medium">
+            Anda perlu bantuan? <span className="ml-1">➤</span>
+          </div>
+          <div
+            className="bg-white w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300 border-2 border-[#0072BB]"
+          >
+            <Image
+            src="/chat.png"
+            alt="Chat"
+            width={32}
+            height={32}
+            className="transition-transform duration-300"
+            />
+          </div>
+          </div>
 
       <style jsx>{`
         @keyframes scale-in {
@@ -181,6 +200,20 @@ export const ChatbotUI: React.FC<ChatbotUIProps> = ({
             opacity: 1;
             transform: translateX(0);
           }
+        }
+        @keyframes pulse-animation {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+        .pulse-animation {
+          animation: pulse-animation 1s ease-in-out;
         }
       `}</style>
     </div>

@@ -13,7 +13,6 @@ import { Badge } from "@/components/ui/badge";
 import { formatRupiah } from "@/lib/utils";
 import Link from "next/link";
 import { StarRating } from "./StarRating";
-import Image from "next/image";
 
 export function DestinationCard({
   id,
@@ -29,7 +28,7 @@ export function DestinationCard({
       <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow duration-300">
         <div className="h-48 relative">
           {/* Default image fallback if the specific image doesn't exist */}
-          <Image
+          <img
             src={imageUrl}
             alt={name}
             className="object-cover w-full h-full"
