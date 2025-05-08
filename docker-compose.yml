@@ -15,8 +15,6 @@ services:
     environment:
       - NODE_ENV=production
       - AZURE_OPENAI_API_KEY=${AZURE_AI_KEY}
-      # Override DATABASE_URL to use the direct connection instead of pgbouncer
-      - DATABASE_URL=${DIRECT_URL}
       # Disable connection pooling for Docker environment
       - PRISMA_CLIENT_ENGINE_TYPE=binary
     networks:
