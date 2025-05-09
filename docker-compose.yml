@@ -10,12 +10,9 @@ services:
     restart: unless-stopped
     ports:
       - "5000:5000"
-    env_file:
-      - .env
     environment:
       - NODE_ENV=production
       - AZURE_OPENAI_API_KEY=${AZURE_AI_KEY}
-      # Disable connection pooling for Docker environment
       - PRISMA_CLIENT_ENGINE_TYPE=binary
     networks:
       - jogja-smart-tour-network
